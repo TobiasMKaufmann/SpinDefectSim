@@ -1,0 +1,18 @@
+services:
+  harvard1-dev:
+    build: .
+    container_name: harvard1-dev
+    volumes:
+      - type: volume
+        source: harvard1-workspace
+        target: /app
+    environment:
+      - PYTHONUNBUFFERED=1
+    stdin_open: true
+    tty: true
+    working_dir: /app
+    command: bash
+
+volumes:
+  harvard1-workspace:
+    driver: local
