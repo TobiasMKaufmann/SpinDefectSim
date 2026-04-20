@@ -7,7 +7,7 @@ sensing protocols, screened Coulomb electrostatics, magnetometry and electrometr
 2-D field distributions.
 
 > **Physical models:** all formulae, assumptions, and literature references are documented
-> in [`docs/theory.md`](../docs/theory.md).
+> in [`docs/theory.md`](docs/theory.md).
 
 ---
 
