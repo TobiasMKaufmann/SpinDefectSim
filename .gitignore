@@ -8,5 +8,14 @@ build/
 .eggs/
 *.ipynb_checkpoints/
 .ipynb_checkpoints/
+
+# Development environment — not part of the library
+Dockerfile
+docker-compose.yml
+requirements.txt
+
+# Research notebooks and hardware files — not part of the library
 a lot of stuff/
 stripline_B_field/
+Mask/
+Stripline/

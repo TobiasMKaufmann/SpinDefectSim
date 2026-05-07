@@ -26,7 +26,7 @@ def noise_floor(contrast: float | None = None, n_photons: float | None = None) -
     -------
     sigma : float
     """
-    C  = float(contrast  if contrast  is not None else DEFAULT.contrast)
+    C  = float(contrast  if contrast  is not None else DEFAULT.get_contrast())
     Np = float(n_photons if n_photons is not None else DEFAULT.n_photons)
     return 1.0 / (C * np.sqrt(Np))
 

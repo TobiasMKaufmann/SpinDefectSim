@@ -374,7 +374,7 @@ class MagnetometryExperiment(PhysicalParams):
         lw  = linewidth_Hz if linewidth_Hz is not None else (
             1.0 / self.defaults.T2star
         )
-        con = contrast if contrast is not None else self.defaults.contrast
+        con = contrast if contrast is not None else self.defaults.get_contrast()
         freqs = self.transition_frequencies(x_obs, y_obs, z_obs)
         return PL_model(np.asarray(f_axis, dtype=float), freqs, lw, con)
 

@@ -36,7 +36,6 @@ def E_gate_bias(
         E[1] += G[1, 0] * x + G[1, 1] * y
     return E
 
-# TODO: Check that the Yukawa potential case is correctly implemented!
 def E_disorder_point_charges(
     r_obs_xyz,
     charges_xyzq: np.ndarray,

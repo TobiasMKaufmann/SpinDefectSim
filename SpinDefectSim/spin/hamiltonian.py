@@ -6,14 +6,18 @@ odmr_hamiltonian_Hz() builder.  Built-in defect types (VB⁻, NV⁻, …) live i
 :mod:`spin.defects`.  Any combination of spin, ZFS, E-field coupling,
 gyromagnetic ratio, and quantization axis is supported.
 
-The Hamiltonian H/h (in Hz) for spin-S with lab-frame B and quantization
-axis z′:
+The electron-only Hamiltonian H/h (in Hz) for spin-S with lab-frame B and
+quantization axis z′:
 
   H = D₀·(Sz′²  − S(S+1)/3·I)                          [ZFS axial,   S ≥ 1]
     + E₀·(Sx′²  − Sy′²)                                  [ZFS transverse, S ≥ 1]
     + d∥·Ez′·(Sz′²  − S(S+1)/3·I)                        [E axial,     S ≥ 1]
     + d⊥·[Ey′·(Sx′²−Sy′²) + Ex′·{Sx′,Sy′}]              [E transverse, S ≥ 1]
     + γₑ·(Bx′·Sx′ + By′·Sy′ + Bz′·Sz′)                  [Zeeman, all S]
+
+When nuclear spins are included (via full_hyperfine_hamiltonian_Hz), the
+Hilbert space is extended to H_e ⊗ H_n1 ⊗ H_n2 ⊗ … and the full Hamiltonian
+is assembled in this tensor-product space.
 
 Applied B and E are given in the *lab* frame and rotated into the defect's
 local frame (z′ = quantization_axis) before H is assembled.
@@ -152,6 +156,201 @@ def odmr_hamiltonian_Hz(sp: SpinParams, E_vec_lab: np.ndarray) -> np.ndarray:
 vb_spin_hamiltonian_Hz = odmr_hamiltonian_Hz
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+#  Tensor-product helpers for hyperfine Hamiltonians
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _kron_embed(
+    ops: "dict[int, np.ndarray]",
+    dims: "list[int]",
+) -> np.ndarray:
+    """
+    Embed one or more operators into a tensor-product Hilbert space.
+
+    Parameters
+    ----------
+    ops  : mapping from subspace index k → operator acting on that subspace.
+           Any subspace *not* listed receives an identity of appropriate dimension.
+    dims : list of subspace dimensions [d_0, d_1, …, d_{N-1}].
+
+    Returns
+    -------
+    result : complex128 ndarray of shape (∏ dims, ∏ dims).
+
+    Examples
+    --------
+    Embed S_z (electron, subspace 0) acting on space e ⊗ n (dims [3, 3])::
+
+        _kron_embed({0: Sz_e}, [3, 3])          # → Sz_e ⊗ I_3
+
+    Hyperfine term S_i · I_j for nucleus at subspace 1::
+
+        _kron_embed({0: S_i, 1: I_j}, [3, 3])   # → S_i ⊗ I_j
+    """
+    parts = [
+        ops.get(k, np.eye(d, dtype=complex)).astype(complex)
+        for k, d in enumerate(dims)
+    ]
+    result = parts[0]
+    for p in parts[1:]:
+        result = np.kron(result, p)
+    return result
+
+
+def full_hyperfine_hamiltonian_Hz(
+    sp: "SpinParams",
+    E_vec_lab: np.ndarray,
+    nuclear_spins: list,
+) -> np.ndarray:
+    """
+    Build the complete electron + nuclear Hamiltonian H/h (Hz) including
+    hyperfine coupling, nuclear Zeeman, and nuclear quadrupole terms.
+
+    The Hilbert space is ordered as  H_e ⊗ H_n1 ⊗ H_n2 ⊗ …
+    with total dimension  (2S+1) · Π_k(2I_k+1).
+
+    If *nuclear_spins* is empty this returns the same result as
+    :func:`odmr_hamiltonian_Hz` (only the electron spin, same dimension).
+
+    Parameters
+    ----------
+    sp            : :class:`SpinParams` — electron spin parameters.
+    E_vec_lab     : (3,) lab-frame electric field (V/m).
+    nuclear_spins : list of :class:`~spin.nuclear.NuclearSpin`.
+
+    Returns
+    -------
+    H : complex128 ndarray, shape (dim_total, dim_total).
+
+    Notes
+    -----
+    The full Hamiltonian is::
+
+        H / h = [H_electron ⊗ 𝟙_nuclear]
+              + Σ_k [𝟙_e ⊗ … ⊗ H_nuclear_k ⊗ …]
+              + Σ_k Σ_{i,j} A_k[i,j] · (S_i ⊗ I_{kj})
+
+    where H_nuclear_k includes nuclear Zeeman (γ_n · B · I) and, for I ≥ 1,
+    the electric quadrupole  P · (Iz² − I(I+1)/3 · 𝟙).
+
+    All field components (B, E) are rotated into the defect local frame
+    (z′ = sp.quantization_axis) before assembly.
+    """
+    if not nuclear_spins:
+        return odmr_hamiltonian_Hz(sp, E_vec_lab)
+
+    from .matrices import spin_matrices
+
+    # ── Rotate fields into local frame ────────────────────────────────────────
+    B_total = np.asarray(sp.B_T, float) + np.asarray(sp.B_extra_T, float)
+    E_vec   = np.asarray(E_vec_lab, float)
+    q       = np.asarray(sp.quantization_axis, float)
+    if np.allclose(q, [0., 0., 1.]):
+        B_local = B_total
+        E_local = E_vec
+    else:
+        R = _local_frame_rotation(q / np.linalg.norm(q))
+        B_local = R @ B_total
+        E_local = R @ E_vec
+
+    # ── Hilbert-space dimensions ──────────────────────────────────────────────
+    dim_e  = int(round(2 * sp.spin + 1))
+    dims_n = [int(round(2 * ns.spin + 1)) for ns in nuclear_spins]
+    dims   = [dim_e] + dims_n          # [d_e, d_n1, d_n2, …]
+
+    dim_total = 1
+    for d in dims:
+        dim_total *= d
+    H = np.zeros((dim_total, dim_total), dtype=complex)
+
+    # ── Electron spin Hamiltonian (subspace 0) ────────────────────────────────
+    H_e = _odmr_hamiltonian_local_Hz(sp, B_local, E_local)
+    H += _kron_embed({0: H_e}, dims)
+
+    Se = spin_matrices(sp.spin)[:3]    # (Sx_e, Sy_e, Sz_e)
+
+    # ── Nuclear contributions (one per nucleus) ───────────────────────────────
+    for k, ns in enumerate(nuclear_spins):
+        subspace = k + 1               # electron is subspace 0
+        I_ops = spin_matrices(ns.spin)[:3]    # (Ix, Iy, Iz)
+        dim_nk = dims_n[k]
+
+        # Nuclear Zeeman:  γ_n · (Bx·Ix + By·Iy + Bz·Iz)
+        H_nZ = ns.gamma_Hz_T * sum(
+            float(B_local[i]) * I_ops[i] for i in range(3)
+        )
+        H += _kron_embed({subspace: H_nZ}, dims)
+
+        # Nuclear electric quadrupole:  P · (Iz² − I(I+1)/3 · 𝟙)   [I ≥ 1]
+        if ns.quadrupole_Hz != 0.0 and ns.spin >= 1.0:
+            Iz = I_ops[2]
+            I_id = np.eye(dim_nk, dtype=complex)
+            H_Q = ns.quadrupole_Hz * (
+                Iz @ Iz - ns.spin * (ns.spin + 1) / 3.0 * I_id
+            )
+            H += _kron_embed({subspace: H_Q}, dims)
+
+        # Hyperfine  S · A · I  =  Σ_{i,j} A[i,j] · S_i ⊗ I_j
+        for i in range(3):
+            for j in range(3):
+                A_ij = float(ns.A_tensor_Hz[i, j])
+                if A_ij == 0.0:
+                    continue
+                H += A_ij * _kron_embed({0: Se[i], subspace: I_ops[j]}, dims)
+
+    return H
+
+
+def odmr_transitions_Hz(
+    H: np.ndarray,
+    electron_dim: int,
+    ms0_basis_index: int,
+    overlap_threshold: float = 0.1,
+) -> np.ndarray:
+    """
+    Extract ODMR-relevant transition frequencies from a full electron+nuclear
+    Hamiltonian.
+
+    "ODMR-relevant" means the initial state has dominant electron |ms=0⟩
+    character (overlap ≥ *overlap_threshold* with |ms=0⟩_e ⊗ 𝟙_n) and the
+    final state does not (i.e. has |ms = ±1⟩_e character).
+
+    Parameters
+    ----------
+    H                : full Hamiltonian (dim_total × dim_total), complex.
+    electron_dim     : dimension of the electron spin subspace (2S+1).
+    ms0_basis_index  : index of |ms=0⟩ in the electron Sz eigenbasis.
+    overlap_threshold: minimum |ms=0⟩_e overlap to classify a state as
+                       belonging to the |ms=0⟩ manifold.
+
+    Returns
+    -------
+    freqs : float64 ndarray, ODMR transition frequencies (Hz), sorted ascending.
+    """
+    evals, evecs = eigh(H)
+    dim_total  = H.shape[0]
+    dim_nuclear = dim_total // electron_dim
+
+    # Projector diagonal: 1 for rows that belong to |ms=0⟩_e ⊗ any nuclear state
+    P0_diag = np.zeros(dim_total)
+    start = ms0_basis_index * dim_nuclear
+    P0_diag[start : start + dim_nuclear] = 1.0
+
+    # Overlap of each eigenstate with the |ms=0⟩_e subspace
+    overlaps_0 = np.einsum("ij,j,ij->i", evecs.conj(), P0_diag, evecs).real
+
+    ms0_mask = overlaps_0 >= overlap_threshold
+
+    freqs = []
+    for i0 in np.where(ms0_mask)[0]:
+        for j in np.where(~ms0_mask)[0]:
+            df = abs(float(evals[j]) - float(evals[i0]))
+            if df > 0.0:
+                freqs.append(df)
+
+    return np.sort(np.unique(np.round(freqs, decimals=0)))
+
+
 def diagonalize_hamiltonian(H: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     """
     Diagonalise a Hermitian Hamiltonian.
@@ -245,6 +444,7 @@ class SpinDefect(PhysicalParams):
         E0_Hz: Optional[float] = None,
         d_perp: Optional[float] = None,
         d_parallel: Optional[float] = None,
+        nuclear_spins=None,
         defaults: Optional[Defaults] = None,
     ):
         super().__init__(defaults=defaults)
@@ -287,10 +487,69 @@ class SpinDefect(PhysicalParams):
         )
         self.defect_type = dt
 
+        # Nuclear spins: explicit list overrides the defect-type default
+        if nuclear_spins is not None:
+            self.nuclear_spins = list(nuclear_spins)
+        else:
+            self.nuclear_spins = list(dt.nuclear_spins)
+
     # ── query methods ─────────────────────────────────────────────────────────
     def hamiltonian(self, E_vec_Vpm=(0., 0., 0.)) -> np.ndarray:
-        """Return H/h (Hz) as a (2S+1)×(2S+1) complex matrix."""
+        """Return the electron-only H/h (Hz) as a (2S+1)×(2S+1) complex matrix."""
         return odmr_hamiltonian_Hz(self.spin_params, np.asarray(E_vec_Vpm, float))
+
+    def full_hamiltonian(self, E_vec_Vpm=(0., 0., 0.)) -> np.ndarray:
+        """
+        Return H/h (Hz) in the full electron ⊗ nuclear Hilbert space.
+
+        Dimension: (2S+1) · Π_k(2I_k+1).  If no nuclear spins are set
+        (``self.nuclear_spins`` is empty) this is identical to
+        :meth:`hamiltonian`.
+
+        Parameters
+        ----------
+        E_vec_Vpm : (3,) lab-frame E-field (V/m).
+
+        Returns
+        -------
+        H : complex128 ndarray.
+        """
+        return full_hyperfine_hamiltonian_Hz(
+            self.spin_params,
+            np.asarray(E_vec_Vpm, float),
+            self.nuclear_spins,
+        )
+
+    def hyperfine_transitions(
+        self,
+        E_vec_Vpm=(0., 0., 0.),
+        overlap_threshold: float = 0.1,
+    ) -> np.ndarray:
+        """
+        ODMR transition frequencies (Hz) from the full electron+nuclear
+        Hamiltonian, sorted ascending.
+
+        These are transitions from states with dominant |ms=0⟩_e character
+        to states with dominant |ms=±1⟩_e character (or ±3/2, etc.).  Each
+        nuclear-spin substate produces a separate line, giving the hyperfine
+        multiplet structure visible in a high-resolution ODMR spectrum.
+
+        Parameters
+        ----------
+        E_vec_Vpm        : (3,) lab-frame E-field (V/m).
+        overlap_threshold: minimum |ms=0⟩_e amplitude-squared to classify a
+                           state as the initial manifold. Default 0.1.
+
+        Returns
+        -------
+        freqs : float64 ndarray (Hz).
+        """
+        H = self.full_hamiltonian(E_vec_Vpm)
+        sp = self.spin_params
+        dim_e = int(round(2 * sp.spin + 1))
+        return odmr_transitions_Hz(
+            H, dim_e, sp.ms0_index, overlap_threshold=overlap_threshold
+        )
 
     def diagonalize(
         self, E_vec_Vpm=(0., 0., 0.)
@@ -394,8 +653,9 @@ class SpinDefect(PhysicalParams):
     def __repr__(self) -> str:
         sp  = self.spin_params
         B_mT = np.linalg.norm(sp.B_T) * 1e3
+        nuc = f", {len(self.nuclear_spins)} nuclear spin(s)" if self.nuclear_spins else ""
         return (
             f"SpinDefect(type={self.defect_type.name!r}, S={sp.spin}, "
             f"D0={sp.D0 / 1e9:.3f} GHz, E0={sp.E0 / 1e6:.1f} MHz, "
-            f"|B|={B_mT:.2f} mT)"
+            f"|B|={B_mT:.2f} mT{nuc})"
         )

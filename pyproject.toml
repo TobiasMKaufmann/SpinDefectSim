@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "spindefectsim"
+version = "1.0.0"
+description = "Spin-defect sensing simulation library: ODMR, ensemble modelling, electrometry, magnetometry"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Tobias M. Kaufmann" },
+]
+keywords = [
+  "spin defects", "NV center", "VB minus", "ODMR", "quantum sensing",
+  "magnetometry", "electrometry", "hBN", "diamond", "spin Hamiltonian",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Physics",
+]
+requires-python = ">=3.9"
+dependencies = [
+  "numpy>=1.22",
+  "scipy>=1.8",
+  "matplotlib>=3.5",
+  "pandas>=1.4",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=7",
+  "jupyter",
+  "notebook",
+]
+
+[project.urls]
+Homepage = "https://github.com/TobiasMKaufmann/SpinDefectSim"
+Repository = "https://github.com/TobiasMKaufmann/SpinDefectSim"
+Documentation = "https://github.com/TobiasMKaufmann/SpinDefectSim/blob/main/docs/theory.md"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["SpinDefectSim*"]
+
+[tool.setuptools.package-data]
+"SpinDefectSim" = ["py.typed"]

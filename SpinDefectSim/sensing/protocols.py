@@ -119,8 +119,9 @@ class SensingExperiment(PhysicalParams, PlottingMixin):
         """
         d    = self.defaults
         fwhm = 1.0 / (np.pi * d.T2star)
-        pl_with = ensemble_odmr_spectrum(f_axis_Hz, self.transitions_with, fwhm, d.contrast)
-        pl_no   = ensemble_odmr_spectrum(f_axis_Hz, self.transitions_no,   fwhm, d.contrast)
+        con  = d.get_contrast()
+        pl_with = ensemble_odmr_spectrum(f_axis_Hz, self.transitions_with, fwhm, con)
+        pl_no   = ensemble_odmr_spectrum(f_axis_Hz, self.transitions_no,   fwhm, con)
         return pl_with, pl_no, pl_with - pl_no
 
     # ── Ramsey ───────────────────────────────────────────────────────────────
@@ -184,19 +185,19 @@ class SensingExperiment(PhysicalParams, PlottingMixin):
             self.transitions_with,
             self.transitions_no,
             T2_s=self.defaults.T2echo,
-            contrast=self.defaults.contrast,
+            contrast=self.defaults.get_contrast(),
         )
 
     # ── SNR helpers ──────────────────────────────────────────────────────────
     def snr(self, delta_S, N_avg: float) -> np.ndarray:
         """SNR after *N_avg* gate ON/OFF cycles."""
         d = self.defaults
-        return snr(delta_S, N_avg, d.contrast, d.n_photons)
+        return snr(delta_S, N_avg, d.get_contrast(), d.n_photons)
 
     def n_avg_to_detect(self, delta_S, snr_target: float = 5.0) -> np.ndarray:
         """Number of averaging cycles to reach *snr_target*."""
         d = self.defaults
-        return n_avg_for_threshold(delta_S, snr_target, d.contrast, d.n_photons)
+        return n_avg_for_threshold(delta_S, snr_target, d.get_contrast(), d.n_photons)
 
     def __repr__(self) -> str:
         d = self.defaults
@@ -205,5 +206,5 @@ class SensingExperiment(PhysicalParams, PlottingMixin):
             f"N_def={len(self.E_fields)}, "
             f"T2*={d.T2star*1e9:.0f} ns, "
             f"T2_echo={d.T2echo*1e6:.0f} µs, "
-            f"contrast={d.contrast:.2f})"
+            f"contrast={d.get_contrast():.3f})"
         )

@@ -29,7 +29,18 @@ full derivations can be found in the cited literature.
    - 7.3 [Bulk Currents from Non-Uniform Magnetization](#73-bulk-currents-from-non-uniform-magnetization)
 8. [Ensemble Modelling](#8-ensemble-modelling)
 9. [Model Assumptions and Limitations](#9-model-assumptions-and-limitations)
-10. [References](#10-references)
+10. [Nuclear-Spin Hyperfine Interaction](#10-nuclear-spin-hyperfine-interaction)
+    - 10.1 [Hyperfine Hamiltonian](#101-hyperfine-hamiltonian)
+    - 10.2 [Nuclear Quadrupole Coupling](#102-nuclear-quadrupole-coupling)
+    - 10.3 [Nuclear Zeeman Term](#103-nuclear-zeeman-term)
+    - 10.4 [Tensor-Product Hilbert Space](#104-tensor-product-hilbert-space)
+    - 10.5 [Isotope Constants](#105-isotope-constants)
+11. [Rate-Equation Model for CW Contrast](#11-rate-equation-model-for-cw-contrast)
+    - 11.1 [Level Structure](#111-level-structure)
+    - 11.2 [Rate Matrix and Steady State](#112-rate-matrix-and-steady-state)
+    - 11.3 [CW ODMR Contrast](#113-cw-odmr-contrast)
+    - 11.4 [Pre-built Defect Parameters](#114-pre-built-defect-parameters)
+12. [References](#12-references)
 
 ---
 
@@ -43,11 +54,11 @@ The full Hamiltonian (in frequency units, $H/h$, Hz) is:
 
 $$
 \frac{H}{h} =
-  D_0 \!\left(S_{z'}^2 - \frac{S(S+1)}{3}\,I\right)
-+ E_0 \!\left(S_{x'}^2 - S_{y'}^2\right)
-+ d_\parallel E_{z'}\!\left(S_{z'}^2 - \frac{S(S+1)}{3}\,I\right)
-+ d_\perp\!\left[E_{y'}(S_{x'}^2 - S_{y'}^2) + E_{x'}\{S_{x'},S_{y'}\}\right]
-+ \gamma_e\!\left(B_{x'} S_{x'} + B_{y'} S_{y'} + B_{z'} S_{z'}\right)
+  D_0 \left(S_{z'}^2 - \frac{S(S+1)}{3}\,I\right)
++ E_0 \left(S_{x'}^2 - S_{y'}^2\right)
++ d_\parallel E_{z'}\left(S_{z'}^2 - \frac{S(S+1)}{3}\,I\right)
++ d_\perp\left[E_{y'}(S_{x'}^2 - S_{y'}^2) + E_{x'}\{S_{x'},S_{y'}\}\right]
++ \gamma_e\left(B_{x'} S_{x'} + B_{y'} S_{y'} + B_{z'} S_{z'}\right)
 $$
 
 **Symbols**
@@ -158,11 +169,11 @@ The PL signal (ensemble-averaged) is:
 
 $$
 S_\text{Ramsey}(\tau) = \frac{1}{N}\sum_{n=1}^{N}
-  \left[1 - C \cos\!\left(2\pi\,\delta\!f^{(n)}\,\tau\right)\right]
+  \left[1 - C \cos\left(2\pi\,\delta f^{(n)}\,\tau\right)\right]
   e^{-\tau/T_2^*}
 $$
 
-where $\delta\!f^{(n)} = f_0^{(n)} - f_\text{ref}^{(n)}$ is the local frequency shift,
+where $\delta f^{(n)} = f_0^{(n)} - f_\text{ref}^{(n)}$ is the local frequency shift,
 and $T_2^*$ is the inhomogeneous dephasing time.
 
 **Sensitivity (single shot):**
@@ -186,16 +197,17 @@ to fluctuations at frequency $\sim 1/(2\tau)$ and decays at the slower rate $1/T
 
 $$
 S_\text{echo}(\tau) = \frac{1}{N}\sum_{n=1}^{N}
-  \left[1 - C \cos\!\left(4\pi\,\delta\!f^{(n)}\,\tau\right)\right]
-  e^{-(2\tau/T_2)^3}
+  \cos\left(2\pi\,\delta f^{(n)}\,\tau\right)
+  e^{-\tau/T_2}
 $$
 
-The cubic exponential decay ($e^{-(2\tau)^3/T_2^3}$ in stretched-exponential
-notation) is the standard model for the Hahn-echo envelope under a
-spectral-diffusion noise bath. The exponent $n = 3$ is set by the dominant
-noise source (nuclear spin bath for NV⁻ / VB⁻).
+The decay envelope $e^{-\tau/T_2}$ is a phenomenological simple exponential
+parameterised by the coherence time $T_2$.  (The physically exact envelope
+under a nuclear-spin-bath noise spectral density is a stretched exponential
+$e^{-(2\tau/T_2)^3}$; the library uses the simpler form for efficiency.)
 
-**Optimal τ:** $\tau_\text{opt} = T_2 / (4^{1/3} \cdot 2) \approx T_2 / 5$.
+**Optimal τ:** $\tau_\text{opt} = T_2$, the maximum of the signal envelope
+$\tau\,e^{-\tau/T_2}$.
 
 **References:** [4] Degen et al. 2017; [5] de Lange et al., *Science* 2010.
 
@@ -209,7 +221,7 @@ XY8 applies 8 $\pi$-pulses with alternating X/Y axes, extending coherence by
 suppressing higher-order noise terms via the filter function:
 
 $$
-F_{XY8}(\omega) = 8\tan^2\!\left(\frac{\omega\tau}{2}\right)\,\frac{\cos^2(4\omega\tau)}{\omega^2}
+F_{XY8}(\omega) = 8\tan^2\left(\frac{\omega\tau}{2}\right)\,\frac{\cos^2(4\omega\tau)}{\omega^2}
 $$
 
 The filter peak at $\omega = \pi/(2\tau)$ selects AC signals at $f_\text{AC} = 1/(2\tau)$
@@ -217,7 +229,7 @@ while rejecting DC and low-frequency noise.  Sensitivity scales as $\sim 1/(8^{1
 relative to the Hahn-echo at the same total time, because the $\sqrt{8}$ more phase
 accumulations overcome the $\sqrt{8}$ slower rep rate.
 
-**Reference:** [6] Yan et al., *Physical Review Letters* 2013.
+**Reference:** [6] Yan et al., *Nature Communications* 2013.
 
 ---
 
@@ -357,7 +369,7 @@ $N_\text{im}$ controls the number of image-charge pairs included (truncation).
 The series converges rapidly; $N_\text{im} \ge 10$ is typically sufficient.
 Activated via `screening_model="dual_gate"`.
 
-**Reference:** [7] Zhu et al., *Nano Letters* 2019.
+**Reference:** [7] Jackson, J. D. *Classical Electrodynamics*, 3rd ed. (Wiley, 1999), §2.9.
 
 ---
 
@@ -438,7 +450,7 @@ Spatial gradients in $M_z$ produce **bulk Amperian currents**:
 
 $$
 \vec{K}_\text{bulk} = \nabla \times (M_z\,\hat{z}) =
-\left(-\frac{\partial M_z}{\partial y},\; \frac{\partial M_z}{\partial x},\; 0\right)
+\left(\frac{\partial M_z}{\partial y},\; -\frac{\partial M_z}{\partial x},\; 0\right)
 \quad [\text{A m}^{-1}]
 $$
 
@@ -516,7 +528,7 @@ exceeds the fluctuation correlation time of the environment.
 
 Each defect can have its own quantization axis $\hat{z}'_i$, sampled from:
 - **Fixed axis** — all defects share the same axis (e.g. all perpendicular to the substrate).
-- **Random / powder** — axes drawn uniformly from the unit sphere ($\hat{z}' \sim \text{Uniform}(S^2)$).
+- **Random / powder** — axes drawn uniformly from the unit sphere ($\hat{z}' \sim \mathrm{Uniform}(\mathbb{S}^2)$).
 - **User-supplied** — a $(N, 3)$ array of pre-computed axes.
 
 ---
@@ -533,10 +545,207 @@ Each defect can have its own quantization axis $\hat{z}'_i$, sampled from:
 | 2-D magnetization | Magnetometry | $M_z$ is assumed independent of $z$ (thin-film limit). |
 | Incoherent ensemble | Signals | No inter-defect correlations or collective effects. |
 | Shot-noise limited | SNR | Background fluorescence contributions beyond shot noise (e.g. substrate PL) are not included. |
+| Diagonal hyperfine tensor | Hyperfine | The hyperfine tensor $A$ is supplied in the defect local frame; off-diagonal elements are supported but typically assumed to vanish for axially symmetric sites. |
+| Single metastable state | Rate model | A single collective shelving state pools all ISC population; multiple distinct singlets are not resolved. |
 
 ---
 
-## 10. References
+## 10. Nuclear-Spin Hyperfine Interaction
+
+### 10.1 Hyperfine Hamiltonian
+
+Coupling between the electron spin $\vec{S}$ and a nuclear spin $\vec{I}_k$ is
+described by the hyperfine interaction:
+
+$$
+\frac{H_\text{hf}}{h} = \vec{S} \cdot A_k \cdot \vec{I}_k
+  = \sum_{i,j} A_k^{ij}\, S_i \otimes I_{kj}
+$$
+
+where $A_k$ is the $3\times 3$ hyperfine coupling tensor (Hz) of nucleus $k$ in the
+defect local frame ($z' =$ electron spin quantization axis).
+
+For an **axially symmetric** site the tensor is diagonal:
+
+$$
+A_k = \operatorname{diag}(A_\perp,\, A_\perp,\, A_\parallel)
+$$
+
+where $A_\parallel = A_{zz}$ is the longitudinal component (along the defect
+quantization axis) and $A_\perp = A_{xx} = A_{yy}$ is the transverse component.
+Built with `axial_A_tensor(A_zz_Hz, A_perp_Hz)`.
+
+For an **isotropic** (Fermi contact) coupling:
+
+$$
+A_k = A_\text{iso}\,\mathbf{1}_3
+$$
+
+Built with `isotropic_A_tensor(A_iso_Hz)`.
+
+Typical values:
+
+| Defect | Nucleus | $A_\parallel$ (MHz) | $A_\perp$ (MHz) |
+|--------|---------|---------------------|-----------------|
+| NV⁻ (diamond) | ¹⁴N on-site | −2.14 | −2.70 |
+| VB⁻ (hBN)     | ¹⁴N ×3 in-plane | ≈0 | +47.8 |
+
+---
+
+### 10.2 Nuclear Quadrupole Coupling
+
+For nuclei with spin $I \ge 1$, the non-spherical nuclear charge distribution
+couples to the electric field gradient at the nuclear site:
+
+$$
+\frac{H_Q}{h} = P_k\left(I_{z,k}^2 - \frac{I_k(I_k+1)}{3}\,\mathbf{1}\right)
+$$
+
+where $P_k$ (Hz) is the quadrupole coupling constant.
+For NV⁻ ¹⁴N: $P \approx -4.95$ MHz.
+
+**Reference:** [10] Felton et al., *Physical Review B* 2009.
+
+---
+
+### 10.3 Nuclear Zeeman Term
+
+The nuclear spin also precesses in the applied magnetic field:
+
+$$
+\frac{H_{nZ}}{h} = \gamma_{n,k}\,\bigl(B_{x'} I_{x,k} + B_{y'} I_{y,k} + B_{z'} I_{z,k}\bigr)
+$$
+
+where $\gamma_{n,k}$ (Hz T⁻¹) is the nuclear gyromagnetic ratio for isotope $k$.
+At typical laboratory fields ($\lesssim 10$ mT) the nuclear Zeeman splitting
+($\lesssim 100$ kHz for ¹⁴N) is much smaller than the hyperfine splitting and
+acts as a small perturbation.
+
+---
+
+### 10.4 Tensor-Product Hilbert Space
+
+The full electron + nuclear Hamiltonian is assembled in the tensor-product space:
+
+$$
+\mathcal{H} = \mathcal{H}_e \otimes \mathcal{H}_{n_1} \otimes \mathcal{H}_{n_2} \otimes \cdots
+$$
+
+with total dimension $(2S+1)\prod_k(2I_k+1)$.  Each term in $H$ is embedded as a
+tensor-product operator acting on its own subspace and as the identity on all others:
+
+$$
+\frac{H}{h} =
+  \underbrace{H_e \otimes \mathbf{1}_{n_1} \otimes \cdots}_{\text{electron}}
++ \sum_k\underbrace{\mathbf{1}_e \otimes \cdots \otimes H_{n_k} \otimes \cdots}_{\text{nuclear }k}
++ \sum_k \sum_{i,j} A_k^{ij}\,S_i \otimes I_{kj}
+$$
+
+Implemented in `full_hyperfine_hamiltonian_Hz`.
+
+---
+
+### 10.5 Isotope Constants
+
+Gyromagnetic ratios (Hz T⁻¹) shipped with the library:
+
+| Constant | Isotope | $I$ | $\gamma_n$ (MHz T⁻¹) |
+|----------|---------|-----|----------------------|
+| `GAMMA_14N`  | ¹⁴N  | 1   | +3.077  |
+| `GAMMA_15N`  | ¹⁵N  | 1/2 | −4.316  |
+| `GAMMA_11B`  | ¹¹B  | 3/2 | +13.660 |
+| `GAMMA_10B`  | ¹⁰B  | 3   | +4.575  |
+| `GAMMA_13C`  | ¹³C  | 1/2 | +10.708 |
+| `GAMMA_29Si` | ²⁹Si | 1/2 | −5.319  |
+
+**Reference:** [11] Harris et al. (IUPAC recommendations), *Pure and Applied Chemistry* 2001.
+
+---
+
+## 11. Rate-Equation Model for CW Contrast
+
+### 11.1 Level Structure
+
+For a spin-$S$ defect with $N = 2S+1$ magnetic sublevels, the level structure
+has three sub-manifolds:
+
+$$
+\underbrace{|g, +S\rangle, \ldots, |g, -S\rangle}_{N\text{ ground states}}
+\quad
+\underbrace{|e, +S\rangle, \ldots, |e, -S\rangle}_{N\text{ excited states}}
+\quad
+\underbrace{|\text{shelf}\rangle}_{1\text{ metastable state (if ISC active)}}
+$$
+
+Level indices: ground $= 0\ldots N-1$, excited $= N\ldots 2N-1$, shelving $= 2N$.
+
+---
+
+### 11.2 Rate Matrix and Steady State
+
+The population vector $\vec{P}$ evolves as $\dot{\vec{P}} = R\,\vec{P}$, where the
+rate matrix $R$ encodes the following processes:
+
+| Process | Rate | Comment |
+|---------|------|---------|
+| Laser excitation | $k_\text{opt}$ | Spin-blind; same for all $m_S$ |
+| Radiative decay | $k_\text{rad}$ | Spin-preserving: $|e, m_S\rangle \to |g, m_S\rangle$ |
+| ISC to shelving | $k_\text{ISC}(m_S)$ | Spin-selective; faster for $|m_S|>0$ |
+| Return from shelf | $k_\text{shelf}(m_S)$ | Spin-polarising: predominant return to $m_S=0$ |
+| Non-radiative | $k_\text{nr}$ | Spin-blind; contributes to lifetime, not contrast |
+
+Steady state is the null vector of $R$ normalised to $\sum_i P_i = 1$:
+
+$$
+R\,\vec{P}_\text{ss} = 0, \qquad \sum_i P_i = 1
+$$
+
+---
+
+### 11.3 CW ODMR Contrast
+
+PL in the **reference** state (spin polarised, far from MW resonance):
+
+$$
+\text{PL}_\text{off} = k_\text{rad} \sum_{n=N}^{2N-1} P_n^\text{(ss,off)}
+$$
+
+PL when a **saturating MW** drives transition $(m_{S,0} \leftrightarrow m_{S,1})$:
+
+$$
+\text{PL}_\text{on} = k_\text{rad} \sum_{n=N}^{2N-1} P_n^\text{(ss,on)}
+$$
+
+CW ODMR contrast:
+
+$$
+C = \frac{\text{PL}_\text{off} - \text{PL}_\text{on}}{\text{PL}_\text{off}}
+$$
+
+The sign convention is positive for dips (PL decreases on resonance, as for NV⁻ and VB⁻).
+
+---
+
+### 11.4 Pre-built Defect Parameters
+
+| Defect | Spin | Host | $k_\text{rad}$ (MHz) | $\tau$ | Predicted $C$ |
+|--------|------|------|---------------------|-------|---------------|
+| NV⁻   | 1    | diamond | 77  | 13 ns  | ≈23 % |
+| VB⁻   | 1    | hBN     | 294 | 3.4 ns | ≈2 %  |
+| V_SiC | 1    | 4H-SiC  | 167 | 6 ns   | ≈15 % |
+| P1    | 1/2  | diamond | 100 | —      | 0 %  (no ISC) |
+| Cr/GaN| 3/2  | GaN     | 100 | —      | 0 %  (ISC unknown) |
+
+Values from: Tetienne et al., NJP 14, 103033 (2012) [NV⁻]; Haykal et al.,
+npj Quantum Inf. 8, 16 (2022) [VB⁻]; Christle et al., Nat. Mater. 14, 160 (2015) [V_SiC].
+
+The contrast is auto-computed via `Defaults.get_contrast()` when `contrast=None`.
+
+**References:** [12], [13], [14], [15].
+
+---
+
+## 12. References
 
 [1] Gottscholl, A. et al. "Initialization and read-out of intrinsic spin defects in a van der Waals crystal at room temperature." *Nature Materials* **19**, 540–545 (2020). https://doi.org/10.1038/s41563-020-0619-6
 
@@ -550,8 +759,20 @@ Each defect can have its own quantization axis $\hat{z}'_i$, sampled from:
 
 [6] Yan, F. et al. "Rotating-frame relaxation as a noise spectrum analyser of a superconducting qubit undergoing driven evolution." *Nature Communications* **4**, 2337 (2013). https://doi.org/10.1038/ncomms3337
 
-[7] Zhu, J. et al. "Remote spin entanglement between two quantum dots connected by Fermi sea." *Nano Letters* **19**, 6622–6629 (2019). https://doi.org/10.1021/acs.nanolett.9b02938
+[7] Jackson, J. D. *Classical Electrodynamics*, 3rd ed. (Wiley, 1999), §2.9 — Method of Images for parallel conducting planes.
 
 [8] Lima, E. A. & Weiss, B. P. "Obtaining vector magnetic field maps from single-component measurements of geological samples." *Journal of Geophysical Research* **114**, B06102 (2009). https://doi.org/10.1029/2008JB006006
 
 [9] Thiel, L. et al. "Probing magnetism in 2D materials at the nanoscale with single-spin microscopy." *Science* **364**, 973–976 (2019). https://doi.org/10.1126/science.aav6926
+
+[10] Felton, S. et al. "Hyperfine interaction in the ground state of the negatively charged nitrogen vacancy center in diamond." *Physical Review B* **79**, 075203 (2009). https://doi.org/10.1103/PhysRevB.79.075203
+
+[11] Harris, R. K. et al. "NMR nomenclature: nuclear spin properties and conventions for chemical shifts." *Pure and Applied Chemistry* **73**, 1795–1818 (2001). https://doi.org/10.1351/pac200173111795
+
+[12] Tetienne, J.-P. et al. "Magnetic-field-dependent photodynamics of single NV defects in diamond." *New Journal of Physics* **14**, 103033 (2012). https://doi.org/10.1088/1367-2630/14/10/103033
+
+[13] Christle, D. J. et al. "Isolated electron spins in silicon carbide with millisecond coherence times." *Nature Materials* **14**, 160–163 (2015). https://doi.org/10.1038/nmat4144
+
+[14] Robledo, L. et al. "Spin dynamics in the optical cycle of single nitrogen-vacancy centres in diamond." *New Journal of Physics* **13**, 025013 (2011). https://doi.org/10.1088/1367-2630/13/2/025013
+
+[15] Haykal, A. et al. "Decoherence properties and optical lifetime of VB⁻ spin defects in hexagonal boron nitride." *npj Quantum Information* **8**, 16 (2022). https://doi.org/10.1038/s41534-022-00528-0

@@ -11,41 +11,6 @@ sensing protocols, screened Coulomb electrostatics, magnetometry and electrometr
 
 ---
 
----
-
-## Package structure
-
-```
-SpinDefectSim/
-├── base/
-│   ├── params.py          Defaults dataclass, PhysicalParams base, mixins
-│   └── mixins.py          PlottingMixin, SerializationMixin, SweepMixin
-├── spin/
-│   ├── defects.py         DefectType class and built-in presets
-│   ├── matrices.py        Spin operators for any spin S
-│   ├── hamiltonian.py     odmr_hamiltonian_Hz(), SpinParams, SpinDefect
-│   ├── spectra.py         CW lineshapes, ensemble spectrum builders
-│   └── echo.py            Hahn-echo, Ramsey lock-in signals
-├── coulomb/
-│   └── kernels.py         Screened Coulomb kernels (bare, Yukawa, dual-gate)
-├── sensing/
-│   ├── protocols.py       SensingExperiment — CW, Ramsey, Hahn-echo
-│   ├── sequences.py       RamseySequence, HahnEchoSequence, XY8Sequence
-│   └── snr.py             Shot-noise SNR utilities
-├── electrometry/          ← E-field sources and E-field imaging
-│   ├── efield.py          ElectricFieldBuilder, E_gate_bias, E_disorder_point_charges
-│   └── electrometry.py    ElectrometryExperiment — charges → E → ODMR maps
-├── magnetometry/          ← B-field sources and B-field imaging
-│   ├── geometry.py        SquareGeometry, DiskGeometry sample shapes
-│   ├── bfield.py          Biot-Savart stray B-field calculations
-│   └── magnetometry.py    MagnetometryExperiment — M(x,y) → B → ODMR maps
-└── analysis/
-    ├── ensemble.py        DefectEnsemble — positions, E-fields, B-fields, axes
-    └── sweep.py           ParameterSweep wrapper
-```
-
----
-
 ## Installation
 
 ```bash
@@ -84,18 +49,141 @@ my_defect = DefectType(name="my_centre", spin=1, D0_Hz=1.5e9, d_perp=0.2)
 For a spin-S defect with quantization axis z′, the Hamiltonian (H/h, in Hz) is:
 
 ```
-H = D₀·(Sz′² − S(S+1)/3·I)                      ← ZFS axial   (S ≥ 1)
-  + E₀·(Sx′² − Sy′²)                             ← ZFS strain  (S ≥ 1)
-  + d∥·Ez′·(Sz′² − S(S+1)/3·I)                   ← E axial     (S ≥ 1)
-  + d⊥·[Ey′·(Sx′²−Sy′²) + Ex′·{Sx′,Sy′}]        ← E transverse (S ≥ 1)
-  + γₑ·(Bx′·Sx′ + By′·Sy′ + Bz′·Sz′)            ← Zeeman      (all S)
+H = D₀·(Sz′² − S(S+1)/3·I)                       ← ZFS axial    (S ≥ 1)
+  + E₀·(Sx′² − Sy′²)                              ← ZFS strain   (S ≥ 1)
+  + d∥·Ez′·(Sz′² − S(S+1)/3·I)                    ← E axial      (S ≥ 1)
+  + d⊥·[Ey′·(Sx′²−Sy′²) + Ex′·{Sx′,Sy′}]         ← E transverse (S ≥ 1)
+  + γₑ·(Bx′·Sx′ + By′·Sy′ + Bz′·Sz′)             ← electron Zeeman (all S)
+  + Σₖ S·Aₖ·Iₖ                                    ← hyperfine    (nuclear spins)
+  + Σₖ γₙ,ₖ·(Bx′·Ix,ₖ + By′·Iy,ₖ + Bz′·Iz,ₖ)    ← nuclear Zeeman
+  + Σₖ Pₖ·(Iz,ₖ² − Iₖ(Iₖ+1)/3·I)                ← quadrupole   (Iₖ ≥ 1)
 ```
+
+The electron-only Hamiltonian (top five terms) is built by `odmr_hamiltonian_Hz`.
+The full electron + nuclear Hamiltonian (all terms) is built by
+`full_hyperfine_hamiltonian_Hz`, which assembles the tensor-product Hilbert space
+H_e ⊗ H_n1 ⊗ H_n2 ⊗ … automatically.
 
 Applied B and E vectors are supplied in the **lab frame** and automatically
 rotated into the defect's local frame via the quantization axis before H is built.
 
 ODMR observables come from transitions out of the |ms=0⟩-like eigenstate (the
 one with highest overlap with the Sz eigenstate at index `ms0_index`).
+
+---
+
+## Nuclear spins and hyperfine coupling
+
+`NuclearSpin` encapsulates a single nuclear spin with its hyperfine tensor,
+gyromagnetic ratio, and (optionally) quadrupole coupling.  All built-in defect
+presets already carry their natural nuclear environments.
+
+```python
+from SpinDefectSim.spin.nuclear import (
+    NuclearSpin, axial_A_tensor, isotropic_A_tensor,
+    GAMMA_14N, GAMMA_15N, GAMMA_13C, GAMMA_11B,
+)
+from SpinDefectSim.spin.hamiltonian import (
+    SpinParams, full_hyperfine_hamiltonian_Hz, odmr_transitions_Hz,
+)
+
+# ── NV⁻ on-site ¹⁴N (I = 1) ──────────────────────────────────────────────
+N14_NV = NuclearSpin(
+    spin=1,
+    A_tensor_Hz=axial_A_tensor(A_zz_Hz=-2.14e6, A_perp_Hz=-2.70e6),
+    gamma_Hz_T=GAMMA_14N,
+    label="14N",
+    quadrupole_Hz=-4.95e6,
+)
+
+# ── VB⁻ three equivalent ¹⁴N neighbours (in-plane, axial A ≈ 0) ──────────
+N14_VB = NuclearSpin(
+    spin=1,
+    A_tensor_Hz=axial_A_tensor(A_zz_Hz=0, A_perp_Hz=47.8e6),
+    gamma_Hz_T=GAMMA_14N,
+    label="14N_VB",
+)
+
+# ── Build the full electron + nuclear Hamiltonian ─────────────────────────
+sp = SpinParams(spin=1, D0_Hz=2.87e9)    # NV⁻ ground state
+H  = full_hyperfine_hamiltonian_Hz(sp, E_vec_lab=[0, 0, 0], nuclear_spins=[N14_NV])
+print(H.shape)   # → (9, 9)  [3 electron × 3 nuclear]
+
+# Extract ODMR transitions (hyperfine-split lines)
+freqs = odmr_transitions_Hz(H, electron_dim=3, ms0_basis_index=1)
+print([f"{f/1e6:.2f} MHz" for f in freqs])
+
+# ── ¹³C nearest-neighbour in diamond ─────────────────────────────────────
+C13 = NuclearSpin(
+    spin=0.5,
+    A_tensor_Hz=isotropic_A_tensor(13.0e6),   # Fermi contact ~ 13 MHz
+    gamma_Hz_T=GAMMA_13C,
+    label="13C",
+)
+
+# ── Use the preset NV⁻ defect (includes ¹⁴N automatically) ───────────────
+from SpinDefectSim.spin.hamiltonian import SpinDefect
+sd_nv = SpinDefect("nv_minus", B_mT=3.0)
+H_full = sd_nv.full_hamiltonian()     # includes on-site ¹⁴N
+freqs_hf = sd_nv.hyperfine_transitions()   # hyperfine-split ODMR lines
+```
+
+Isotope gyromagnetic ratios shipped with the library:
+
+| Constant        | Isotope | I    | γₙ (MHz/T) |
+|-----------------|---------|------|------------|
+| `GAMMA_14N`     | ¹⁴N     | 1    | +3.077     |
+| `GAMMA_15N`     | ¹⁵N     | 1/2  | −4.316     |
+| `GAMMA_11B`     | ¹¹B     | 3/2  | +13.660    |
+| `GAMMA_10B`     | ¹⁰B     | 3    | +4.575     |
+| `GAMMA_13C`     | ¹³C     | 1/2  | +10.708    |
+| `GAMMA_29Si`    | ²⁹Si    | 1/2  | −5.319     |
+
+---
+
+## CW ODMR contrast — rate model
+
+`RateModel` solves the optical / ISC rate equations in steady state to predict
+the CW ODMR contrast $C = (\text{PL}_\text{off} - \text{PL}_\text{on}) / \text{PL}_\text{off}$
+for any spin-$S$ defect.
+
+```python
+from SpinDefectSim.spin.rates import (
+    RateModel, RateParams,
+    NV_RATES, VB_RATES, VSIC_RATES, P1_RATES,
+)
+
+# ── Inspect pre-built contrasts ──────────────────────────────────────────
+for name, rp, ms0 in [("NV⁻",  NV_RATES,   1),
+                      ("VB⁻",  VB_RATES,   1),
+                      ("V_SiC",VSIC_RATES, 1),
+                      ("P1",   P1_RATES,   0)]:
+    model = RateModel(rp, ms0_index=ms0)
+    print(f"{name:6s}  C = {model.contrast()*100:.1f} %")
+# NV⁻    C = 22.9 %
+# VB⁻    C =  2.0 %
+# V_SiC  C = 15.1 %
+# P1     C =  0.0 %   ← no ISC path
+
+# ── Custom defect ────────────────────────────────────────────────────────
+my_rates = RateParams(
+    spin=1,
+    k_optical=20e6,
+    k_rad=100e6,
+    k_isc_excited=[50e6, 5e6, 50e6],   # ms = +1, 0, -1
+    k_from_shelving=[0.0, 10e6, 0.0],  # spin-polarising return to ms = 0
+)
+model = RateModel(my_rates, ms0_index=1)
+print(f"contrast = {model.contrast()*100:.1f} %")
+
+# ── Photoluminescence vs. MW power ──────────────────────────────────────
+import numpy as np
+k_mw_range = np.logspace(3, 9, 200)    # MW Rabi rate (Hz)
+pl_vals = [model.pl(k_mw) for k_mw in k_mw_range]   # normalised PL
+```
+
+The rate model is integrated into `Defaults.get_contrast()`: if `contrast=None`
+(the default), it auto-computes $C$ from the defect's `rate_params`.
 
 ---
 
@@ -206,7 +294,7 @@ to the contrast between signal and reference branches:
 
 | `sensing` | Signal branch uses | Reference branch uses |
 |-----------|--------------------|-----------------------|
-| `"E"`     | E_fields, bias B only B | bias B only, E = 0 |
+| `"E"`     | E_fields + bias B  | bias B only, E = 0 |
 | `"B"`     | stray B, E = 0     | bias B only, B_extra = 0 |
 | `"both"`  | E_fields + stray B | bias B only, both zero |
 
@@ -606,4 +694,39 @@ from SpinDefectSim.spin.defects import DefectType, get_defect, list_defects
 dt = get_defect("nv_minus")       # retrieve preset
 list_defects()                    # print table of all presets
 dt = DefectType(name="custom", spin=1, D0_Hz=2e9, d_perp=0.1)
+```
+
+---
+
+## Package structure
+
+```
+SpinDefectSim/
+├── base/
+│   ├── params.py          Defaults dataclass, PhysicalParams base, mixins
+│   └── mixins.py          PlottingMixin, SerializationMixin, SweepMixin
+├── spin/
+│   ├── defects.py         DefectType class and built-in presets
+│   ├── matrices.py        Spin operators for any spin S
+│   ├── hamiltonian.py     odmr_hamiltonian_Hz(), full_hyperfine_hamiltonian_Hz(), SpinDefect
+│   ├── nuclear.py         NuclearSpin dataclass, isotope γ constants, A-tensor helpers
+│   ├── rates.py           RateModel, RateParams, CW ODMR contrast from ISC equations
+│   ├── spectra.py         CW lineshapes, ensemble spectrum builders
+│   └── echo.py            Hahn-echo, Ramsey lock-in signals
+├── coulomb/
+│   └── kernels.py         Screened Coulomb kernels (bare, Yukawa, dual-gate)
+├── sensing/
+│   ├── protocols.py       SensingExperiment — CW, Ramsey, Hahn-echo
+│   ├── sequences.py       RamseySequence, HahnEchoSequence, XY8Sequence
+│   └── snr.py             Shot-noise SNR utilities
+├── electrometry/          ← E-field sources and E-field imaging
+│   ├── efield.py          ElectricFieldBuilder, E_gate_bias, E_disorder_point_charges
+│   └── electrometry.py    ElectrometryExperiment — charges → E → ODMR maps
+├── magnetometry/          ← B-field sources and B-field imaging
+│   ├── geometry.py        SquareGeometry, DiskGeometry sample shapes
+│   ├── bfield.py          Biot-Savart stray B-field calculations
+│   └── magnetometry.py    MagnetometryExperiment — M(x,y) → B → ODMR maps
+└── analysis/
+    ├── ensemble.py        DefectEnsemble — positions, E-fields, B-fields, axes
+    └── sweep.py           ParameterSweep wrapper
 ```

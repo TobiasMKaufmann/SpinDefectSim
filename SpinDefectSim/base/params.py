@@ -42,6 +42,14 @@ class Defaults:
     >>> d = Defaults.for_defect("nv_minus")   # NV⁻ defaults
     >>> d = Defaults(B_mT=3.0)                # override single param
     >>> sp = d.to_spin_params()
+
+    Notes
+    -----
+    **ODMR contrast**: ``contrast=None`` (the default) triggers automatic
+    computation from the rate-equation model registered for ``defect_type``.
+    Use ``get_contrast()`` whenever you need a float; direct access via
+    ``.contrast`` will return ``None`` in that case.
+    To hard-wire a specific value supply ``contrast=0.05`` (or any float).
     """
 
     # --- Defect species ---
@@ -58,8 +66,9 @@ class Defaults:
     # --- Coherence / detection ---
     T2star: float = 50e-9          # CW / Ramsey dephasing time (s)
     T2echo: float = 10e-6          # Hahn-echo coherence time (s)
-    contrast: float = 0.02         # optical spin contrast (fraction)
+    contrast: Optional[float] = None  # ODMR contrast; None → computed from rate model
     n_photons: int = 500           # photons per shot
+    k_optical: Optional[float] = None  # laser excitation rate (Hz); None → use defect default
 
     # --- Ensemble geometry ---
     N_def: int = 1200              # number of VB⁻ defects in laser beam
@@ -75,7 +84,7 @@ class Defaults:
     # --- Coulomb / screening ---
     screening_model: Optional[str] = "dual_gate"  # None | 'yukawa' | 'dual_gate'
     lambda_screen: float = 10e-9   # Yukawa screening length (m)
-    d_gate: float = 15e-9          # dual-gate half-separation (m)
+    d_gate: float = 15e-9          # dual-gate separation (m) — distance between top and bottom gates
     n_images: int = 30             # image charge sum truncation
     r_min: float = 0.2e-9         # minimum distance regulariser (m)
 
@@ -135,6 +144,66 @@ class Defaults:
             n_images=self.n_images,
             r_min=self.r_min,
         )
+
+    def get_contrast(self, k_optical: Optional[float] = None) -> float:
+        """
+        Return the CW ODMR contrast as a plain float.
+
+        Behaviour
+        ---------
+        * If ``self.contrast`` is not ``None``, return it directly.  This
+          lets the user hard-wire a known contrast value (e.g. from a
+          calibration measurement) without running the rate model.
+        * If ``self.contrast`` is ``None``, compute the contrast from the
+          rate-equation model registered for ``self.defect_type``.
+          If the defect has no rate model (e.g. a custom :class:`DefectType`
+          with ``rate_params=None``), returns 0.0 and a ``UserWarning`` is
+          issued.
+
+        Parameters
+        ----------
+        k_optical : float, optional
+            Override the laser excitation rate (s⁻¹) used by the rate model.
+            ``None`` → use the value stored in the defect's :class:`~SpinDefectSim.spin.rates.RateParams`
+            (or ``self.k_optical`` if set on this ``Defaults`` instance).
+
+        Returns
+        -------
+        contrast : float in [0, 1]
+
+        Examples
+        --------
+        >>> d = Defaults(defect_type="nv_minus")
+        >>> print(f"{d.get_contrast()*100:.1f} %")   # ~23 %
+
+        >>> d = Defaults(contrast=0.05)    # hard-wired: always 0.05
+        >>> print(d.get_contrast())        # 0.05
+        """
+        if self.contrast is not None:
+            return float(self.contrast)
+
+        import warnings
+        import dataclasses
+        from SpinDefectSim.spin.rates import RateModel
+        from SpinDefectSim.spin.defects import get_defect
+
+        dt = get_defect(self.defect_type)
+        if dt.rate_params is None:
+            warnings.warn(
+                f"Defect '{self.defect_type}' has no rate_params; contrast defaults to 0.0. "
+                "Set Defaults(contrast=...) to override.",
+                UserWarning,
+                stacklevel=2,
+            )
+            return 0.0
+
+        rp = dt.rate_params
+        # Apply k_optical override (prefer explicit argument, then self.k_optical)
+        k_opt = k_optical if k_optical is not None else self.k_optical
+        if k_opt is not None:
+            rp = dataclasses.replace(rp, k_optical=float(k_opt))
+
+        return RateModel(rp, dt.ms0_index).contrast()
 
 
 # Convenience singleton — use when you just need the defaults unchanged
