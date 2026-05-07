@@ -1,0 +1,2032 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Spin-defect sensing simulation library — ODMR, ensemble modelling, electrometry, magnetometry, and screened Coulomb field computation.
+">
+      
+      
+      
+        <link rel="canonical" href="https://tobiasmkaufmann.github.io/SpinDefectSim/api/sensing/">
+      
+      
+        <link rel="prev" href="../spin/">
+      
+      
+        <link rel="next" href="../ensemble/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Sensing Protocols - SpinDefectSim</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sensing-protocols" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="SpinDefectSim" class="md-header__button md-logo" aria-label="SpinDefectSim" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SpinDefectSim
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Sensing Protocols
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/TobiasMKaufmann/SpinDefectSim" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    TobiasMKaufmann/SpinDefectSim
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../installation/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Installation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../quickstart/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Quick Start
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../theory/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Physical Models
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SpinDefectSim" class="md-nav__button md-logo" aria-label="SpinDefectSim" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SpinDefectSim
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/TobiasMKaufmann/SpinDefectSim" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    TobiasMKaufmann/SpinDefectSim
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../base/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Base & Parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spin Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sensing Protocols
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sensing Protocols
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimsensingprotocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.sensing.protocols
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.sensing.protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sensingexperiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SensingExperiment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SensingExperiment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constructor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cw_odmr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cw_odmr
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ramsey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ramsey
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#echo_static" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        echo_static
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#echo_odmr_lockin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        echo_odmr_lockIn
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#snr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        snr
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#n_avg_to_detect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        n_avg_to_detect
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimsensingsequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.sensing.sequences
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.sensing.sequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pulsesequence-abstract-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PulseSequence (abstract base)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PulseSequence (abstract base)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor-fields-all-sequences-inherit-these" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constructor fields (all sequences inherit these)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#total_time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        total_time
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#repetition_rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        repetition_rate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#n_avg_in_time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        n_avg_in_time
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pulse_time_s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pulse_time_s
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ramseysequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RamseySequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hahnechosequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HahnEchoSequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xy8sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XY8Sequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimsensingsnr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.sensing.snr
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.sensing.snr">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#noise_floor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        noise_floor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#snr_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        snr
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#n_avg_for_threshold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        n_avg_for_threshold
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ensemble/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ensemble Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../electrometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Electrometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../magnetometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Magnetometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../coulomb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coulomb Kernels
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../theory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Physical Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimsensingprotocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.sensing.protocols
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.sensing.protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sensingexperiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SensingExperiment
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SensingExperiment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constructor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cw_odmr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cw_odmr
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ramsey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ramsey
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#echo_static" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        echo_static
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#echo_odmr_lockin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        echo_odmr_lockIn
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#snr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        snr
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#n_avg_to_detect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        n_avg_to_detect
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimsensingsequences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.sensing.sequences
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.sensing.sequences">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pulsesequence-abstract-base" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PulseSequence (abstract base)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PulseSequence (abstract base)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor-fields-all-sequences-inherit-these" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constructor fields (all sequences inherit these)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#total_time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        total_time
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#repetition_rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        repetition_rate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#n_avg_in_time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        n_avg_in_time
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pulse_time_s" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pulse_time_s
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ramseysequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RamseySequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hahnechosequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HahnEchoSequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#xy8sequence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        XY8Sequence
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimsensingsnr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.sensing.snr
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.sensing.snr">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#noise_floor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        noise_floor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#snr_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        snr
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#n_avg_for_threshold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        n_avg_for_threshold
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="sensing-protocols">Sensing Protocols<a class="headerlink" href="#sensing-protocols" title="Permanent link">&para;</a></h1>
+<p>The <code>sensing</code> subpackage orchestrates complete sensing experiments by combining spin-Hamiltonian computations with pulse-sequence timing and shot-noise SNR estimation.</p>
+<hr />
+<h2 id="spindefectsimsensingprotocols"><code>SpinDefectSim.sensing.protocols</code><a class="headerlink" href="#spindefectsimsensingprotocols" title="Permanent link">&para;</a></h2>
+<h3 id="sensingexperiment"><code>SensingExperiment</code><a class="headerlink" href="#sensingexperiment" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.sensing.protocols</span><span class="w"> </span><span class="kn">import</span> <span class="n">SensingExperiment</span>
+</span></code></pre></div>
+<p>Container for a single lock-in sensing experiment. Holds two branches — a <em>signal</em> branch (field <strong>with</strong> the quantity to sense) and a <em>reference</em> branch (field <strong>without</strong> it) — and computes ODMR observables for both.</p>
+<p>Inherits: <code>PhysicalParams</code>, <code>PlottingMixin</code></p>
+<h4 id="constructor">Constructor<a class="headerlink" href="#constructor" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">SensingExperiment</span><span class="p">(</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">sp_with</span><span class="p">:</span> <span class="n">SpinParams</span><span class="p">,</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">sp_no</span><span class="p">:</span> <span class="n">SpinParams</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">E_fields_Vpm</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">defaults</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Defaults</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">quantization_axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">B_extra_fields_with</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">B_extra_fields_no</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sp_with</code></td>
+<td><code>SpinParams</code></td>
+<td>Spin parameters for the <strong>signal</strong> branch (field on)</td>
+</tr>
+<tr>
+<td><code>sp_no</code></td>
+<td><code>SpinParams</code></td>
+<td>Spin parameters for the <strong>reference</strong> branch (field off)</td>
+</tr>
+<tr>
+<td><code>E_fields_Vpm</code></td>
+<td><code>np.ndarray</code></td>
+<td>Local E-field at each defect, shape <code>(N, 3)</code>, in V/m</td>
+</tr>
+<tr>
+<td><code>defaults</code></td>
+<td><code>Defaults \| None</code></td>
+<td>Global defaults</td>
+</tr>
+<tr>
+<td><code>quantization_axes</code></td>
+<td><code>np.ndarray \| None</code></td>
+<td>Per-defect z′-axes, shape <code>(N, 3)</code></td>
+</tr>
+<tr>
+<td><code>B_extra_fields_with</code></td>
+<td><code>np.ndarray \| None</code></td>
+<td>Per-defect stray B-field for signal branch, shape <code>(N, 3)</code>, in T</td>
+</tr>
+<tr>
+<td><code>B_extra_fields_no</code></td>
+<td><code>np.ndarray \| None</code></td>
+<td>Per-defect stray B-field for reference branch, shape <code>(N, 3)</code>, in T</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lazy-cached properties:</strong></p>
+<ul>
+<li><code>transitions_with</code> — list of N transition-frequency arrays for the signal branch</li>
+<li><code>transitions_no</code> — list of N transition-frequency arrays for the reference branch</li>
+</ul>
+<hr />
+<h4 id="cw_odmr"><code>cw_odmr</code><a class="headerlink" href="#cw_odmr" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">cw_odmr</span><span class="p">(</span><span class="n">f_axis_Hz</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Compute CW ODMR spectra for both branches and their difference.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>f_axis_Hz</code></td>
+<td><code>np.ndarray</code></td>
+<td>MW frequency axis (Hz)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>(pl_with, pl_no, dpl)</code> — each 1-D array over <code>f_axis_Hz</code></p>
+<table>
+<thead>
+<tr>
+<th>Output</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pl_with</code></td>
+<td>Normalised PL spectrum, signal branch</td>
+</tr>
+<tr>
+<td><code>pl_no</code></td>
+<td>Normalised PL spectrum, reference branch</td>
+</tr>
+<tr>
+<td><code>dpl</code></td>
+<td>Lock-in difference: <code>pl_with − pl_no</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">3.35e9</span><span class="p">,</span> <span class="mf">3.57e9</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">pl_w</span><span class="p">,</span> <span class="n">pl_no</span><span class="p">,</span> <span class="n">dpl</span> <span class="o">=</span> <span class="n">exp</span><span class="o">.</span><span class="n">cw_odmr</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</span></code></pre></div></p>
+<hr />
+<h4 id="ramsey"><code>ramsey</code><a class="headerlink" href="#ramsey" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">ramsey</span><span class="p">(</span><span class="n">tau_range_s</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span>
+</span></code></pre></div>
+<p>Compute the Ramsey free-induction decay (FID) lock-in signal ΔS(τ) for the ensemble.</p>
+<p>The free-precession time axis is automatically chosen if not supplied, spanning [0, 2 × T₂*] with 200 points.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tau_range_s</code></td>
+<td><code>np.ndarray \| None</code></td>
+<td>Free-precession time values (s); if <code>None</code>, auto-generated from <code>defaults.T2star</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>(tau_s, S_with, S_no, dS, tau_opt, dS_peak)</code></p>
+<table>
+<thead>
+<tr>
+<th>Output</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tau_s</code></td>
+<td>Free-precession time axis (s)</td>
+</tr>
+<tr>
+<td><code>S_with</code></td>
+<td>Echo amplitude vs τ, signal branch</td>
+</tr>
+<tr>
+<td><code>S_no</code></td>
+<td>Echo amplitude vs τ, reference branch</td>
+</tr>
+<tr>
+<td><code>dS</code></td>
+<td>Lock-in difference: <code>S_with − S_no</code></td>
+</tr>
+<tr>
+<td><code>tau_opt</code></td>
+<td>τ that maximises <code>|dS|</code> (s)</td>
+</tr>
+<tr>
+<td><code>dS_peak</code></td>
+<td>Peak differential signal at <code>tau_opt</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="echo_static"><code>echo_static</code><a class="headerlink" href="#echo_static" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">echo_static</span><span class="p">(</span><span class="n">tau_range_s</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span>
+</span></code></pre></div>
+<p>Compute the Hahn-echo lock-in signal ΔS(τ) for a static (DC) field measurement.</p>
+<p>Returns the same <code>(tau_s, S_with, S_no, dS, tau_opt, dS_peak)</code> tuple as <code>ramsey</code>, but uses <code>defaults.T2echo</code> for the coherence time and the echo decoherence envelope.</p>
+<hr />
+<h4 id="echo_odmr_lockin"><code>echo_odmr_lockIn</code><a class="headerlink" href="#echo_odmr_lockin" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">echo_odmr_lockIn</span><span class="p">(</span><span class="n">f_axis_Hz</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Frequency-domain echo-detected lock-in spectrum.</p>
+<p><strong>Returns:</strong> <code>(dpl, pl_with, pl_no)</code> — same convention as <code>cw_odmr</code>, but using T₂-limited linewidths</p>
+<hr />
+<h4 id="snr"><code>snr</code><a class="headerlink" href="#snr" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">snr</span><span class="p">(</span><span class="n">delta_S</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">N_avg</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Signal-to-noise ratio after <code>N_avg</code> averaging cycles.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>delta_S</code></td>
+<td><code>np.ndarray</code></td>
+<td>Differential signal</td>
+</tr>
+<tr>
+<td><code>N_avg</code></td>
+<td><code>float</code></td>
+<td>Number of averaging cycles</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> same shape as <code>delta_S</code></p>
+<hr />
+<h4 id="n_avg_to_detect"><code>n_avg_to_detect</code><a class="headerlink" href="#n_avg_to_detect" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">n_avg_to_detect</span><span class="p">(</span><span class="n">delta_S</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">snr_target</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Number of averaging cycles needed to reach <code>snr_target</code>.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>delta_S</code></td>
+<td><code>np.ndarray</code></td>
+<td>Differential signal</td>
+</tr>
+<tr>
+<td><code>snr_target</code></td>
+<td><code>float</code></td>
+<td>Target SNR (default 5σ)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> same shape as <code>delta_S</code></p>
+<hr />
+<h2 id="spindefectsimsensingsequences"><code>SpinDefectSim.sensing.sequences</code><a class="headerlink" href="#spindefectsimsensingsequences" title="Permanent link">&para;</a></h2>
+<p>Pulse sequence classes track hardware gate times (π/2 pulses, π pulses, readout window) and compute per-shot timing and repetition rates.</p>
+<h3 id="pulsesequence-abstract-base"><code>PulseSequence</code> (abstract base)<a class="headerlink" href="#pulsesequence-abstract-base" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.sensing.sequences</span><span class="w"> </span><span class="kn">import</span> <span class="n">PulseSequence</span>
+</span></code></pre></div>
+<h4 id="constructor-fields-all-sequences-inherit-these">Constructor fields (all sequences inherit these)<a class="headerlink" href="#constructor-fields-all-sequences-inherit-these" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>t_pi_half_s</code></td>
+<td><code>10e-9</code></td>
+<td>π/2 pulse duration (s)</td>
+</tr>
+<tr>
+<td><code>t_pi_s</code></td>
+<td><code>20e-9</code></td>
+<td>π pulse duration (s)</td>
+</tr>
+<tr>
+<td><code>t_readout_s</code></td>
+<td><code>300e-9</code></td>
+<td>Optical readout window (s)</td>
+</tr>
+<tr>
+<td><code>t_init_s</code></td>
+<td><code>1.0e-6</code></td>
+<td>Initialization laser pulse (s)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="total_time"><code>total_time</code><a class="headerlink" href="#total_time" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">total_time</span><span class="p">(</span><span class="n">tau_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Wall-clock time per shot:</p>
+<div class="arithmatex">\[T_\text{shot}(\tau) = t_\text{init} + t_\text{pulses} + n_\text{fp} \cdot \tau + t_\text{readout}\]</div>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tau_s</code></td>
+<td><code>float \| np.ndarray</code></td>
+<td>Free-precession time (s)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> total shot time (same type as input)</p>
+<hr />
+<h4 id="repetition_rate"><code>repetition_rate</code><a class="headerlink" href="#repetition_rate" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">repetition_rate</span><span class="p">(</span><span class="n">tau_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Shot repetition rate R(τ) = 1 / T_shot(τ) in Hz.</p>
+<hr />
+<h4 id="n_avg_in_time"><code>n_avg_in_time</code><a class="headerlink" href="#n_avg_in_time" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">n_avg_in_time</span><span class="p">(</span><span class="n">T_int_s</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">tau_s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Number of averaging cycles achievable in a total integration time <code>T_int_s</code> (s).</p>
+<hr />
+<h4 id="pulse_time_s"><code>pulse_time_s</code><a class="headerlink" href="#pulse_time_s" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">pulse_time_s</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">float</span>
+</span></code></pre></div>
+<p>Total time spent in MW pulses per shot: <span class="arithmatex">\(n_{\pi/2} \cdot t_{\pi/2} + n_\pi \cdot t_\pi\)</span>.</p>
+<hr />
+<h4 id="summary"><code>summary</code><a class="headerlink" href="#summary" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">summary</span><span class="p">(</span><span class="n">tau_s</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
+</span></code></pre></div>
+<p>Return a dict of all timing quantities at a given τ.</p>
+<hr />
+<h3 id="ramseysequence"><code>RamseySequence</code><a class="headerlink" href="#ramseysequence" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.sensing.sequences</span><span class="w"> </span><span class="kn">import</span> <span class="n">RamseySequence</span>
+</span></code></pre></div>
+<p>Topology: init → π/2 → [τ] → π/2 → readout</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>n_pi_half_pulses</td>
+<td>2</td>
+</tr>
+<tr>
+<td>n_pi_pulses</td>
+<td>0</td>
+</tr>
+<tr>
+<td>n_free_precession_intervals</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">seq</span> <span class="o">=</span> <span class="n">RamseySequence</span><span class="p">(</span><span class="n">t_pi_half_s</span><span class="o">=</span><span class="mf">12e-9</span><span class="p">,</span> <span class="n">t_readout_s</span><span class="o">=</span><span class="mf">500e-9</span><span class="p">)</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">seq</span><span class="o">.</span><span class="n">total_time</span><span class="p">(</span><span class="mf">200e-9</span><span class="p">))</span>   <span class="c1"># shot time at τ = 200 ns</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+</span></code></pre></div></p>
+<hr />
+<h3 id="hahnechosequence"><code>HahnEchoSequence</code><a class="headerlink" href="#hahnechosequence" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.sensing.sequences</span><span class="w"> </span><span class="kn">import</span> <span class="n">HahnEchoSequence</span>
+</span></code></pre></div>
+<p>Topology: init → π/2 → [τ] → π → [τ] → π/2 → readout</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>n_pi_half_pulses</td>
+<td>2</td>
+</tr>
+<tr>
+<td>n_pi_pulses</td>
+<td>1</td>
+</tr>
+<tr>
+<td>n_free_precession_intervals</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="xy8sequence"><code>XY8Sequence</code><a class="headerlink" href="#xy8sequence" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.sensing.sequences</span><span class="w"> </span><span class="kn">import</span> <span class="n">XY8Sequence</span>
+</span></code></pre></div>
+<p>XY-8 dynamical decoupling: π/2 → [τ/2 – (X π – τ – Y π – τ – X π – τ – Y π – τ)×2 – τ/2] → π/2</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>n_pi_half_pulses</td>
+<td>2</td>
+</tr>
+<tr>
+<td>n_pi_pulses</td>
+<td>8</td>
+</tr>
+<tr>
+<td>n_free_precession_intervals</td>
+<td>16</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note:</strong> The free-precession intervals in XY8 are each τ/2, so <code>total_time(tau_s)</code> uses half the delay for each of the 16 intervals; internally <code>n_fp = 16</code> and the caller supplies <code>τ/2</code>.</p>
+<hr />
+<h2 id="spindefectsimsensingsnr"><code>SpinDefectSim.sensing.snr</code><a class="headerlink" href="#spindefectsimsensingsnr" title="Permanent link">&para;</a></h2>
+<p>Low-level SNR functions. These are also available as methods on <code>SensingExperiment</code>.</p>
+<hr />
+<h3 id="noise_floor"><code>noise_floor</code><a class="headerlink" href="#noise_floor" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.sensing.snr</span><span class="w"> </span><span class="kn">import</span> <span class="n">noise_floor</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">noise_floor</span><span class="p">(</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    <span class="n">contrast</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="n">n_photons</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span>
+</span></code></pre></div>
+<p>Single-shot photon-shot-noise floor:</p>
+<div class="arithmatex">\[\sigma = \frac{1}{C \sqrt{N_\text{ph}}}\]</div>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contrast</code></td>
+<td><code>float \| None</code></td>
+<td>CW ODMR contrast <em>C</em>; if <code>None</code>, uses <code>DEFAULT.get_contrast()</code></td>
+</tr>
+<tr>
+<td><code>n_photons</code></td>
+<td><code>int \| None</code></td>
+<td>Photons per readout; if <code>None</code>, uses <code>DEFAULT.n_photons</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>float</code> — noise floor σ</p>
+<hr />
+<h3 id="snr_1"><code>snr</code><a class="headerlink" href="#snr_1" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.sensing.snr</span><span class="w"> </span><span class="kn">import</span> <span class="n">snr</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">snr</span><span class="p">(</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>    <span class="n">delta_S</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>    <span class="n">N_avg</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>    <span class="n">contrast</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>    <span class="n">n_photons</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Signal-to-noise ratio:</p>
+<div class="arithmatex">\[\text{SNR} = \frac{|\Delta S| \sqrt{N_\text{avg}}}{\sigma}\]</div>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>delta_S</code></td>
+<td><code>np.ndarray</code></td>
+<td>Differential signal ΔS</td>
+</tr>
+<tr>
+<td><code>N_avg</code></td>
+<td><code>float</code></td>
+<td>Number of averaging cycles</td>
+</tr>
+<tr>
+<td><code>contrast</code></td>
+<td><code>float \| None</code></td>
+<td>Override contrast</td>
+</tr>
+<tr>
+<td><code>n_photons</code></td>
+<td><code>int \| None</code></td>
+<td>Override photon count</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> same shape as <code>delta_S</code></p>
+<hr />
+<h3 id="n_avg_for_threshold"><code>n_avg_for_threshold</code><a class="headerlink" href="#n_avg_for_threshold" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.sensing.snr</span><span class="w"> </span><span class="kn">import</span> <span class="n">n_avg_for_threshold</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">n_avg_for_threshold</span><span class="p">(</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    <span class="n">delta_S</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>    <span class="n">snr_target</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">,</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>    <span class="n">contrast</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>    <span class="n">n_photons</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Number of averages needed to reach <code>snr_target</code>:</p>
+<div class="arithmatex">\[N_\text{avg} = \left(\frac{\sigma \cdot \text{SNR}_\text{target}}{|\Delta S|}\right)^2\]</div>
+<p><strong>Returns:</strong> <code>np.ndarray</code> same shape as <code>delta_S</code></p>
+<p><strong>Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.sensing.snr</span><span class="w"> </span><span class="kn">import</span> <span class="n">n_avg_for_threshold</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.sensing.sequences</span><span class="w"> </span><span class="kn">import</span> <span class="n">HahnEchoSequence</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="n">N</span> <span class="o">=</span> <span class="n">n_avg_for_threshold</span><span class="p">(</span><span class="n">dS_peak</span><span class="p">,</span> <span class="n">snr_target</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">contrast</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">n_photons</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="n">seq</span> <span class="o">=</span> <span class="n">HahnEchoSequence</span><span class="p">()</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="n">T_total</span> <span class="o">=</span> <span class="n">N</span> <span class="o">*</span> <span class="n">seq</span><span class="o">.</span><span class="n">total_time</span><span class="p">(</span><span class="n">tau_opt</span><span class="p">)</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Integration time: </span><span class="si">{</span><span class="n">T_total</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e3</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> ms&quot;</span><span class="p">)</span>
+</span></code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2232 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Spin-defect sensing simulation library — ODMR, ensemble modelling, electrometry, magnetometry, and screened Coulomb field computation.
+">
+      
+      
+      
+        <link rel="canonical" href="https://tobiasmkaufmann.github.io/SpinDefectSim/api/ensemble/">
+      
+      
+        <link rel="prev" href="../sensing/">
+      
+      
+        <link rel="next" href="../electrometry/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Ensemble Analysis - SpinDefectSim</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ensemble-analysis" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="SpinDefectSim" class="md-header__button md-logo" aria-label="SpinDefectSim" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SpinDefectSim
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Ensemble Analysis
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/TobiasMKaufmann/SpinDefectSim" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    TobiasMKaufmann/SpinDefectSim
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../installation/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Installation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../quickstart/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Quick Start
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../theory/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Physical Models
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SpinDefectSim" class="md-nav__button md-logo" aria-label="SpinDefectSim" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SpinDefectSim
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/TobiasMKaufmann/SpinDefectSim" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    TobiasMKaufmann/SpinDefectSim
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../base/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Base & Parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spin Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sensing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sensing Protocols
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ensemble Analysis
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ensemble Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimanalysisensemble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.analysis.ensemble
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.analysis.ensemble">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defectensemble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DefectEnsemble
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DefectEnsemble">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constructor
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defect-placement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defect Placement
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Defect Placement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generate_defects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        generate_defects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate_defects_gaussian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        generate_defects_gaussian
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_defects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_defects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_quantization_axis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_quantization_axis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#n_defects_from_ppm-static-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        n_defects_from_ppm (static method)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-field-computation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E-field Computation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="E-field Computation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compute_efields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        compute_efields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_efields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_efields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#efields_from_callable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        efields_from_callable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#efields_from_grid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        efields_from_grid
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-field-computation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B-field Computation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B-field Computation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set_bfields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_bfields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compute_bfields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        compute_bfields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bfields_from_callable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bfields_from_callable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bfields_from_grid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bfields_from_grid
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-experiments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running experiments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running experiments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#to_experiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_experiment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimanalysissweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.analysis.sweep
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.analysis.sweep">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parametersweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ParameterSweep
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ParameterSweep">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constructor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#make_ensemble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        make_ensemble
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../electrometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Electrometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../magnetometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Magnetometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../coulomb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coulomb Kernels
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../theory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Physical Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimanalysisensemble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.analysis.ensemble
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.analysis.ensemble">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defectensemble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DefectEnsemble
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DefectEnsemble">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constructor
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defect-placement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defect Placement
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Defect Placement">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generate_defects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        generate_defects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate_defects_gaussian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        generate_defects_gaussian
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_defects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_defects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_quantization_axis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_quantization_axis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#n_defects_from_ppm-static-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        n_defects_from_ppm (static method)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-field-computation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        E-field Computation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="E-field Computation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compute_efields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        compute_efields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set_efields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_efields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#efields_from_callable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        efields_from_callable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#efields_from_grid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        efields_from_grid
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-field-computation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        B-field Computation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B-field Computation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set_bfields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_bfields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compute_bfields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        compute_bfields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bfields_from_callable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bfields_from_callable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bfields_from_grid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bfields_from_grid
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-experiments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running experiments
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running experiments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#to_experiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_experiment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimanalysissweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.analysis.sweep
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.analysis.sweep">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parametersweep" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ParameterSweep
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ParameterSweep">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constructor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#make_ensemble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        make_ensemble
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="ensemble-analysis">Ensemble Analysis<a class="headerlink" href="#ensemble-analysis" title="Permanent link">&para;</a></h1>
+<p>The <code>analysis</code> subpackage provides <code>DefectEnsemble</code> for managing a spatial ensemble of spin defects with their local E- and B-fields, and <code>ParameterSweep</code> for systematic parameter exploration.</p>
+<hr />
+<h2 id="spindefectsimanalysisensemble"><code>SpinDefectSim.analysis.ensemble</code><a class="headerlink" href="#spindefectsimanalysisensemble" title="Permanent link">&para;</a></h2>
+<h3 id="defectensemble"><code>DefectEnsemble</code><a class="headerlink" href="#defectensemble" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.analysis.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">DefectEnsemble</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># or:</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">SpinDefectSim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sds</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">sds</span><span class="o">.</span><span class="n">DefectEnsemble</span>
+</span></code></pre></div>
+<p>An ensemble of N spin-defect centres distributed across a sensing patch. The class handles defect placement, local field computation (E and B), and wrapping the ensemble into a <code>SensingExperiment</code>.</p>
+<p>Inherits: <code>PhysicalParams</code>, <code>PlottingMixin</code>, <code>SerializationMixin</code>, <code>SweepMixin</code></p>
+<hr />
+<h4 id="constructor">Constructor<a class="headerlink" href="#constructor" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">DefectEnsemble</span><span class="p">(</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">N_def</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">R_patch</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">defaults</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Defaults</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>N_def</code></td>
+<td><code>int \| None</code></td>
+<td>Number of defects; if <code>None</code>, uses <code>defaults.N_def</code></td>
+</tr>
+<tr>
+<td><code>R_patch</code></td>
+<td><code>float \| None</code></td>
+<td>Sensing-patch radius (m); if <code>None</code>, uses <code>defaults.R_patch</code></td>
+</tr>
+<tr>
+<td><code>defaults</code></td>
+<td><code>Defaults \| None</code></td>
+<td>Global defaults object</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes after construction:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Set by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>N_def</code></td>
+<td><code>int</code></td>
+<td>constructor</td>
+</tr>
+<tr>
+<td><code>R_patch</code></td>
+<td><code>float</code></td>
+<td>constructor</td>
+</tr>
+<tr>
+<td><code>defect_positions</code></td>
+<td><code>np.ndarray (N, 2) \| None</code></td>
+<td><code>generate_defects</code> / <code>set_defects</code></td>
+</tr>
+<tr>
+<td><code>quantization_axes</code></td>
+<td><code>np.ndarray (N, 3) \| None</code></td>
+<td><code>generate_defects</code> / <code>set_quantization_axis</code></td>
+</tr>
+<tr>
+<td><code>E_fields</code></td>
+<td><code>np.ndarray (N, 3) \| None</code></td>
+<td><code>compute_efields</code> / <code>set_efields</code></td>
+</tr>
+<tr>
+<td><code>B_extra_fields</code></td>
+<td><code>np.ndarray (N, 3) \| None</code></td>
+<td><code>compute_bfields</code> / <code>set_bfields</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="defect-placement">Defect Placement<a class="headerlink" href="#defect-placement" title="Permanent link">&para;</a></h3>
+<h4 id="generate_defects"><code>generate_defects</code><a class="headerlink" href="#generate_defects" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">generate_defects</span><span class="p">(</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">quantization_axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Randomly place <code>N_def</code> defects with uniform probability inside a circular patch of radius <code>R_patch</code>.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>seed</code></td>
+<td><code>int</code></td>
+<td>NumPy random seed for reproducibility</td>
+</tr>
+<tr>
+<td><code>quantization_axis</code></td>
+<td><code>None \| "random" \| array_like</code></td>
+<td>Defect orientation(s): <code>None</code> → all along z; <code>"random"</code> → uniform random on sphere; shape <code>(3,)</code> → all same; shape <code>(N, 3)</code> → per-defect</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> — defect positions, shape <code>(N, 2)</code>, in metres</p>
+<p><strong>Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">ens</span> <span class="o">=</span> <span class="n">DefectEnsemble</span><span class="p">(</span><span class="n">N_def</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">R_patch</span><span class="o">=</span><span class="mf">200e-9</span><span class="p">)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">positions</span> <span class="o">=</span> <span class="n">ens</span><span class="o">.</span><span class="n">generate_defects</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">quantization_axis</span><span class="o">=</span><span class="s2">&quot;random&quot;</span><span class="p">)</span>
+</span></code></pre></div></p>
+<hr />
+<h4 id="generate_defects_gaussian"><code>generate_defects_gaussian</code><a class="headerlink" href="#generate_defects_gaussian" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">generate_defects_gaussian</span><span class="p">(</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">beam_waist_m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">n_sigma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">3.0</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Place defects with a Gaussian probability density (modelling the laser beam intensity profile). The patch is truncated at <code>n_sigma × beam_waist_m</code>.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>beam_waist_m</code></td>
+<td><code>float</code></td>
+<td>1/e² beam radius (m)</td>
+</tr>
+<tr>
+<td><code>seed</code></td>
+<td><code>int</code></td>
+<td>Random seed</td>
+</tr>
+<tr>
+<td><code>n_sigma</code></td>
+<td><code>float</code></td>
+<td>Truncation radius in units of <code>beam_waist_m</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> shape <code>(N, 2)</code></p>
+<hr />
+<h4 id="set_defects"><code>set_defects</code><a class="headerlink" href="#set_defects" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">set_defects</span><span class="p">(</span><span class="n">positions</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</span></code></pre></div>
+<p>Manually supply defect positions instead of generating them randomly.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>positions</code></td>
+<td><code>np.ndarray</code></td>
+<td>Shape <code>(N, 2)</code>, in metres</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="set_quantization_axis"><code>set_quantization_axis</code><a class="headerlink" href="#set_quantization_axis" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">set_quantization_axis</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</span></code></pre></div>
+<p>Set per-defect quantization axes after defect placement.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spec</code></td>
+<td><code>"random" \| array_like</code></td>
+<td><code>"random"</code> → uniform on sphere; shape <code>(3,)</code> → all same; shape <code>(N, 3)</code> → per-defect</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="n_defects_from_ppm-static-method"><code>n_defects_from_ppm</code> (static method)<a class="headerlink" href="#n_defects_from_ppm-static-method" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nd">@staticmethod</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">n_defects_from_ppm</span><span class="p">(</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">ppm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">beam_waist_m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">hbn_thickness_m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">layer_spacing_m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.334e-9</span><span class="p">,</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="n">density_kg_m3</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2100.0</span><span class="p">,</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>    <span class="n">molar_mass_kg_mol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">24.82e-3</span><span class="p">,</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span>
+</span></code></pre></div>
+<p>Estimate the number of defects inside a Gaussian laser beam from a defect concentration in parts per million (ppm).</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ppm</code></td>
+<td><code>float</code></td>
+<td>Defect concentration (ppm by substitution)</td>
+</tr>
+<tr>
+<td><code>beam_waist_m</code></td>
+<td><code>float</code></td>
+<td>1/e² beam radius (m)</td>
+</tr>
+<tr>
+<td><code>hbn_thickness_m</code></td>
+<td><code>float</code></td>
+<td>Total hBN crystal thickness (m)</td>
+</tr>
+<tr>
+<td><code>layer_spacing_m</code></td>
+<td><code>float</code></td>
+<td>Interlayer spacing (m); default 0.334 nm for hBN</td>
+</tr>
+<tr>
+<td><code>density_kg_m3</code></td>
+<td><code>float</code></td>
+<td>Crystal density (kg/m³); default 2100 kg/m³ for hBN</td>
+</tr>
+<tr>
+<td><code>molar_mass_kg_mol</code></td>
+<td><code>float</code></td>
+<td>Molar mass (kg/mol); default for hBN</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>int</code> — estimated number of defects</p>
+<hr />
+<h3 id="e-field-computation">E-field Computation<a class="headerlink" href="#e-field-computation" title="Permanent link">&para;</a></h3>
+<h4 id="compute_efields"><code>compute_efields</code><a class="headerlink" href="#compute_efields" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">compute_efields</span><span class="p">(</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">E0_gate</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">gate_grad</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">disorder_xyzq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Compute the local E-field at each defect from the combination of a uniform (+ gradient) gate-bias field and optionally screened disorder charge contributions.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>E0_gate</code></td>
+<td><code>array_like (3,)</code></td>
+<td>Uniform gate-bias field (V/m)</td>
+</tr>
+<tr>
+<td><code>gate_grad</code></td>
+<td><code>np.ndarray (2,2) \| None</code></td>
+<td>Linear gradient [[dEx/dx, dEx/dy], [dEy/dx, dEy/dy]] in V/m²</td>
+</tr>
+<tr>
+<td><code>disorder_xyzq</code></td>
+<td><code>np.ndarray (M, 4) \| None</code></td>
+<td>Disorder point charges [x, y, z, q] in SI units</td>
+</tr>
+<tr>
+<td><code>verbose</code></td>
+<td><code>bool</code></td>
+<td>Print progress</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> — local E-fields, shape <code>(N, 3)</code>, in V/m. Also stored as <code>self.E_fields</code>.</p>
+<hr />
+<h4 id="set_efields"><code>set_efields</code><a class="headerlink" href="#set_efields" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">set_efields</span><span class="p">(</span><span class="n">E_fields</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</span></code></pre></div>
+<p>Manually supply pre-computed E-fields.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>E_fields</code></td>
+<td><code>np.ndarray</code></td>
+<td>Shape <code>(N, 3)</code>, in V/m</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="efields_from_callable"><code>efields_from_callable</code><a class="headerlink" href="#efields_from_callable" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">efields_from_callable</span><span class="p">(</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="n">E_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="n">add</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Evaluate a user-supplied function at each defect position to set the E-field.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>E_func</code></td>
+<td><code>Callable</code></td>
+<td>Function with signature <code>E_func(x, y) -&gt; (3,) array</code></td>
+</tr>
+<tr>
+<td><code>add</code></td>
+<td><code>bool</code></td>
+<td>If <code>True</code>, add to existing <code>self.E_fields</code> rather than replacing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> shape <code>(N, 3)</code> in V/m</p>
+<hr />
+<h4 id="efields_from_grid"><code>efields_from_grid</code><a class="headerlink" href="#efields_from_grid" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">efields_from_grid</span><span class="p">(</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">Ex</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">Ey</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="n">Ez</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="n">x_coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="n">y_coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    <span class="n">z_coords</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>    <span class="n">z_defect</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>    <span class="n">bounds_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>    <span class="n">fill_value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>    <span class="n">add</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Interpolate E-field components from a regular 2-D or 3-D grid onto the defect positions using <code>scipy.interpolate.RegularGridInterpolator</code>.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ex, Ey, Ez</code></td>
+<td><code>np.ndarray</code></td>
+<td>Field components; shape <code>(ny, nx)</code> for 2-D or <code>(nz, ny, nx)</code> for 3-D</td>
+</tr>
+<tr>
+<td><code>x_coords, y_coords</code></td>
+<td><code>np.ndarray</code></td>
+<td>1-D coordinate arrays (m)</td>
+</tr>
+<tr>
+<td><code>z_coords</code></td>
+<td><code>np.ndarray \| None</code></td>
+<td>1-D z coordinate array (m); required for 3-D grids</td>
+</tr>
+<tr>
+<td><code>z_defect</code></td>
+<td><code>float \| None</code></td>
+<td>z-height at which to sample the field (m); uses <code>defaults.z_defect</code> if <code>None</code></td>
+</tr>
+<tr>
+<td><code>method</code></td>
+<td><code>str</code></td>
+<td>Interpolation method: <code>"linear"</code> (default) or <code>"nearest"</code></td>
+</tr>
+<tr>
+<td><code>bounds_error</code></td>
+<td><code>bool</code></td>
+<td>Raise if query points are out of bounds</td>
+</tr>
+<tr>
+<td><code>fill_value</code></td>
+<td><code>float</code></td>
+<td>Value returned for out-of-bounds queries</td>
+</tr>
+<tr>
+<td><code>add</code></td>
+<td><code>bool</code></td>
+<td>Add to existing <code>self.E_fields</code> rather than replacing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> shape <code>(N, 3)</code> in V/m</p>
+<hr />
+<h3 id="b-field-computation">B-field Computation<a class="headerlink" href="#b-field-computation" title="Permanent link">&para;</a></h3>
+<h4 id="set_bfields"><code>set_bfields</code><a class="headerlink" href="#set_bfields" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">set_bfields</span><span class="p">(</span><span class="n">B_fields</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</span></code></pre></div>
+<p>Manually supply stray B-fields.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>B_fields</code></td>
+<td><code>np.ndarray</code></td>
+<td>Shape <code>(N, 3)</code>, in T</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="compute_bfields"><code>compute_bfields</code><a class="headerlink" href="#compute_bfields" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">compute_bfields</span><span class="p">(</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="n">magnetization</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Callable</span><span class="p">],</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="n">geometry</span><span class="p">:</span> <span class="n">SampleGeometry</span><span class="p">,</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">n_pts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="n">include_bulk</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>    <span class="n">include_edge</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>    <span class="n">add</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Compute the stray B-field at each defect from a 2-D in-plane magnetization distribution using the Biot-Savart law.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>magnetization</code></td>
+<td><code>np.ndarray \| Callable</code></td>
+<td>M_z grid, shape <code>(ny, nx)</code> in A, <strong>or</strong> callable <code>(x, y) → float</code></td>
+</tr>
+<tr>
+<td><code>geometry</code></td>
+<td><code>SampleGeometry</code></td>
+<td>Sample geometry (polygon, disk, square, …)</td>
+</tr>
+<tr>
+<td><code>n_pts</code></td>
+<td><code>int</code></td>
+<td>Grid resolution for bulk current integration</td>
+</tr>
+<tr>
+<td><code>include_bulk</code></td>
+<td><code>bool</code></td>
+<td>Include contribution from non-uniform bulk ∇×M</td>
+</tr>
+<tr>
+<td><code>include_edge</code></td>
+<td><code>bool</code></td>
+<td>Include contribution from edge currents</td>
+</tr>
+<tr>
+<td><code>add</code></td>
+<td><code>bool</code></td>
+<td>Add to existing <code>self.B_extra_fields</code> rather than replacing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> shape <code>(N, 3)</code> in T</p>
+<hr />
+<h4 id="bfields_from_callable"><code>bfields_from_callable</code><a class="headerlink" href="#bfields_from_callable" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">bfields_from_callable</span><span class="p">(</span><span class="n">B_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">add</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Evaluate a user-supplied function at each defect position to set the B-field.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>B_func</code></td>
+<td><code>Callable</code></td>
+<td>Function <code>B_func(x, y) -&gt; (3,) array</code> in T</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="bfields_from_grid"><code>bfields_from_grid</code><a class="headerlink" href="#bfields_from_grid" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">bfields_from_grid</span><span class="p">(</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="n">Bx</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="n">By</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="n">Bz</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    <span class="n">x_coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    <span class="n">y_coords</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>    <span class="n">z_coords</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>    <span class="n">z_defect</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>    <span class="n">bounds_error</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>    <span class="n">fill_value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>    <span class="n">add</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Interpolate B-field components from a regular grid onto defect positions. Same grid conventions as <code>efields_from_grid</code>.</p>
+<hr />
+<h3 id="running-experiments">Running experiments<a class="headerlink" href="#running-experiments" title="Permanent link">&para;</a></h3>
+<h4 id="to_experiment"><code>to_experiment</code><a class="headerlink" href="#to_experiment" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_experiment</span><span class="p">(</span><span class="n">sensing</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;E&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SensingExperiment</span>
+</span></code></pre></div>
+<p>Wrap the ensemble into a <code>SensingExperiment</code>. The "with" and "no" branches differ by whether the E- or B-field signal is present.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sensing</code></td>
+<td><code>str</code></td>
+<td><code>"E"</code> — modulate E-field; <code>"B"</code> — modulate B-field; <code>"both"</code> — modulate both</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>SensingExperiment</code></p>
+<p><strong>Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">ens</span> <span class="o">=</span> <span class="n">DefectEnsemble</span><span class="p">(</span><span class="n">N_def</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">R_patch</span><span class="o">=</span><span class="mf">250e-9</span><span class="p">)</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">ens</span><span class="o">.</span><span class="n">generate_defects</span><span class="p">()</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="n">ens</span><span class="o">.</span><span class="n">compute_efields</span><span class="p">(</span><span class="n">E0_gate</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">2e6</span><span class="p">))</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="n">exp</span> <span class="o">=</span> <span class="n">ens</span><span class="o">.</span><span class="n">to_experiment</span><span class="p">(</span><span class="n">sensing</span><span class="o">=</span><span class="s2">&quot;E&quot;</span><span class="p">)</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="n">tau_s</span><span class="p">,</span> <span class="n">S_w</span><span class="p">,</span> <span class="n">S_no</span><span class="p">,</span> <span class="n">dS</span><span class="p">,</span> <span class="n">tau_opt</span><span class="p">,</span> <span class="n">dS_peak</span> <span class="o">=</span> <span class="n">exp</span><span class="o">.</span><span class="n">ramsey</span><span class="p">()</span>
+</span></code></pre></div></p>
+<hr />
+<h2 id="spindefectsimanalysissweep"><code>SpinDefectSim.analysis.sweep</code><a class="headerlink" href="#spindefectsimanalysissweep" title="Permanent link">&para;</a></h2>
+<h3 id="parametersweep"><code>ParameterSweep</code><a class="headerlink" href="#parametersweep" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.analysis.sweep</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParameterSweep</span>
+</span></code></pre></div>
+<p>Convenience class for running Cartesian parameter sweeps. Inherits <code>SweepMixin</code>, <code>PlottingMixin</code>, <code>SerializationMixin</code>.</p>
+<h4 id="constructor_1">Constructor<a class="headerlink" href="#constructor_1" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">ParameterSweep</span><span class="p">(</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    <span class="n">N_def</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    <span class="n">tau_echo_s</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="n">defaults</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Defaults</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>N_def</code></td>
+<td><code>int</code></td>
+<td>Default ensemble size</td>
+</tr>
+<tr>
+<td><code>seed</code></td>
+<td><code>int</code></td>
+<td>Default random seed</td>
+</tr>
+<tr>
+<td><code>tau_echo_s</code></td>
+<td><code>np.ndarray \| None</code></td>
+<td>Custom τ axis for echo sweeps</td>
+</tr>
+<tr>
+<td><code>defaults</code></td>
+<td><code>Defaults \| None</code></td>
+<td>Global defaults</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h4 id="make_ensemble"><code>make_ensemble</code><a class="headerlink" href="#make_ensemble" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">make_ensemble</span><span class="p">(</span><span class="o">**</span><span class="n">override_defaults</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DefectEnsemble</span>
+</span></code></pre></div>
+<p>Build a <code>DefectEnsemble</code> with defects already placed according to the sweep's <code>N_def</code> and <code>seed</code>, optionally overriding any <code>Defaults</code> fields.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>**override_defaults</code></td>
+<td></td>
+<td>Any <code>Defaults</code> field name and value</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>DefectEnsemble</code> (with <code>defect_positions</code> already set, <code>E_fields</code> not yet computed)</p>
+<p><strong>Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">sweep</span> <span class="o">=</span> <span class="n">ParameterSweep</span><span class="p">(</span><span class="n">N_def</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="n">E_gate</span><span class="p">,</span> <span class="n">B_mT</span><span class="p">):</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    <span class="n">ens</span> <span class="o">=</span> <span class="n">sweep</span><span class="o">.</span><span class="n">make_ensemble</span><span class="p">(</span><span class="n">B_mT</span><span class="o">=</span><span class="n">B_mT</span><span class="p">)</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>    <span class="n">ens</span><span class="o">.</span><span class="n">compute_efields</span><span class="p">(</span><span class="n">E0_gate</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">E_gate</span><span class="p">))</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>    <span class="n">exp</span> <span class="o">=</span> <span class="n">ens</span><span class="o">.</span><span class="n">to_experiment</span><span class="p">(</span><span class="n">sensing</span><span class="o">=</span><span class="s2">&quot;E&quot;</span><span class="p">)</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">dS</span><span class="p">,</span> <span class="n">tau_opt</span><span class="p">,</span> <span class="n">dS_peak</span> <span class="o">=</span> <span class="n">exp</span><span class="o">.</span><span class="n">ramsey</span><span class="p">()</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;dS_peak&quot;</span><span class="p">:</span> <span class="n">dS_peak</span><span class="p">,</span> <span class="s2">&quot;tau_opt_ns&quot;</span><span class="p">:</span> <span class="n">tau_opt</span> <span class="o">*</span> <span class="mf">1e9</span><span class="p">}</span>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="n">results</span> <span class="o">=</span> <span class="n">sweep</span><span class="o">.</span><span class="n">sweep</span><span class="p">(</span><span class="n">run</span><span class="p">,</span> <span class="n">E_gate</span><span class="o">=</span><span class="p">[</span><span class="mf">1e6</span><span class="p">,</span> <span class="mf">5e6</span><span class="p">,</span> <span class="mf">10e6</span><span class="p">],</span> <span class="n">B_mT</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">])</span>
+</span></code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,3514 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Spin-defect sensing simulation library — ODMR, ensemble modelling, electrometry, magnetometry, and screened Coulomb field computation.
+">
+      
+      
+      
+        <link rel="canonical" href="https://tobiasmkaufmann.github.io/SpinDefectSim/api/spin/">
+      
+      
+        <link rel="prev" href="../base/">
+      
+      
+        <link rel="next" href="../sensing/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Spin Module - SpinDefectSim</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#spin-module" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="SpinDefectSim" class="md-header__button md-logo" aria-label="SpinDefectSim" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SpinDefectSim
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Spin Module
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/TobiasMKaufmann/SpinDefectSim" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    TobiasMKaufmann/SpinDefectSim
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../installation/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Installation
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../quickstart/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Quick Start
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../theory/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Physical Models
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="SpinDefectSim" class="md-nav__button md-logo" aria-label="SpinDefectSim" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SpinDefectSim
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/TobiasMKaufmann/SpinDefectSim" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    TobiasMKaufmann/SpinDefectSim
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../base/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Base & Parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spin Module
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Spin Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimspindefects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.spin.defects
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.spin.defects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defecttype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DefectType
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DefectType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#built-in-presets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Built-in presets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-custom-defect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example — custom defect
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_defect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_defect
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list_defects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        list_defects
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimspinhamiltonian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.spin.hamiltonian
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.spin.hamiltonian">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spinparams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinParams
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinParams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fields_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#odmr_hamiltonian_hz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        odmr_hamiltonian_Hz
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full_hyperfine_hamiltonian_hz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        full_hyperfine_hamiltonian_Hz
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#odmr_transitions_hz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        odmr_transitions_Hz
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagonalize_hamiltonian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        diagonalize_hamiltonian
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_ms0_like_transitions_hz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_ms0_like_transitions_Hz
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindefect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefect
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefect">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constructor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hamiltonian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hamiltonian
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full_hamiltonian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        full_hamiltonian
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagonalize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        diagonalize
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transition_frequencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transition_frequencies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyperfine_transitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hyperfine_transitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zero_field_splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        zero_field_splitting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to_experiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_experiment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimspinnuclear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.spin.nuclear
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.spin.nuclear">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nuclearspin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NuclearSpin
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="NuclearSpin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fields_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#axial_a_tensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        axial_A_tensor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isotropic_a_tensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        isotropic_A_tensor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isotope-gyromagnetic-ratios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Isotope gyromagnetic ratios
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimspinmatrices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.spin.matrices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.spin.matrices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spin_matrices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spin_matrices
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spin_1_matrices-and-spin_half_matrices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spin_1_matrices and spin_half_matrices
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimspinrates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.spin.rates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.spin.rates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rateparams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RateParams
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RateParams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fields_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#built-in-presets_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Built-in presets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ratemodel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RateModel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RateModel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constructor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#steady_state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        steady_state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pl
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contrast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        contrast
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimspinspectra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.spin.spectra
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.spin.spectra">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lorentzian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lorentzian
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pl_model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PL_model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ensemble_transitions_from_efields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ensemble_transitions_from_Efields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ensemble_odmr_spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ensemble_odmr_spectrum
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimspinecho" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.spin.echo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.spin.echo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spin_echo_effective_fwhm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spin_echo_effective_fwhm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#echo_detected_odmr_spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        echo_detected_odmr_spectrum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ensemble_echo_signal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ensemble_echo_signal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lock_in_difference_echo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lock_in_difference_echo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lock_in_odmr_spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lock_in_odmr_spectrum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lock_in_difference_ramsey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lock_in_difference_ramsey
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sensing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sensing Protocols
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ensemble/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ensemble Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../electrometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Electrometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../magnetometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Magnetometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../coulomb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coulomb Kernels
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../theory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Physical Models
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimspindefects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.spin.defects
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.spin.defects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defecttype" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DefectType
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DefectType">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#built-in-presets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Built-in presets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-custom-defect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example — custom defect
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_defect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_defect
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list_defects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        list_defects
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimspinhamiltonian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.spin.hamiltonian
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.spin.hamiltonian">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spinparams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinParams
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinParams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fields_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#odmr_hamiltonian_hz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        odmr_hamiltonian_Hz
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full_hyperfine_hamiltonian_hz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        full_hyperfine_hamiltonian_Hz
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#odmr_transitions_hz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        odmr_transitions_Hz
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagonalize_hamiltonian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        diagonalize_hamiltonian
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract_ms0_like_transitions_hz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        extract_ms0_like_transitions_Hz
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spindefect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefect
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefect">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constructor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hamiltonian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hamiltonian
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full_hamiltonian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        full_hamiltonian
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagonalize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        diagonalize
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transition_frequencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transition_frequencies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hyperfine_transitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        hyperfine_transitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zero_field_splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        zero_field_splitting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to_experiment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_experiment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimspinnuclear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.spin.nuclear
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.spin.nuclear">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nuclearspin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NuclearSpin
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="NuclearSpin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fields_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#axial_a_tensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        axial_A_tensor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isotropic_a_tensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        isotropic_A_tensor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isotope-gyromagnetic-ratios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Isotope gyromagnetic ratios
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimspinmatrices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.spin.matrices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.spin.matrices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spin_matrices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spin_matrices
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spin_1_matrices-and-spin_half_matrices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spin_1_matrices and spin_half_matrices
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimspinrates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.spin.rates
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.spin.rates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rateparams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RateParams
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RateParams">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fields_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#built-in-presets_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Built-in presets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ratemodel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RateModel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RateModel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constructor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#steady_state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        steady_state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pl
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contrast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        contrast
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimspinspectra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.spin.spectra
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.spin.spectra">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lorentzian" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lorentzian
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pl_model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PL_model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ensemble_transitions_from_efields" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ensemble_transitions_from_Efields
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ensemble_odmr_spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ensemble_odmr_spectrum
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spindefectsimspinecho" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpinDefectSim.spin.echo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SpinDefectSim.spin.echo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spin_echo_effective_fwhm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spin_echo_effective_fwhm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#echo_detected_odmr_spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        echo_detected_odmr_spectrum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ensemble_echo_signal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ensemble_echo_signal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lock_in_difference_echo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lock_in_difference_echo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lock_in_odmr_spectrum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lock_in_odmr_spectrum
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lock_in_difference_ramsey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lock_in_difference_ramsey
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="spin-module">Spin Module<a class="headerlink" href="#spin-module" title="Permanent link">&para;</a></h1>
+<p>The <code>spin</code> subpackage contains everything related to single-spin physics: defect presets, spin Hamiltonians, nuclear hyperfine coupling, spin matrices, CW and echo ODMR spectra, and the optical rate model for contrast estimation.</p>
+<hr />
+<h2 id="spindefectsimspindefects"><code>SpinDefectSim.spin.defects</code><a class="headerlink" href="#spindefectsimspindefects" title="Permanent link">&para;</a></h2>
+<h3 id="defecttype"><code>DefectType</code><a class="headerlink" href="#defecttype" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.defects</span><span class="w"> </span><span class="kn">import</span> <span class="n">DefectType</span>
+</span></code></pre></div>
+<p>Dataclass holding the physical parameters for a single ODMR-active spin-defect species.</p>
+<h4 id="fields">Fields<a class="headerlink" href="#fields" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>str</code></td>
+<td>—</td>
+<td>Human-readable label</td>
+</tr>
+<tr>
+<td><code>spin</code></td>
+<td><code>float</code></td>
+<td>—</td>
+<td>Electron spin quantum number <em>S</em></td>
+</tr>
+<tr>
+<td><code>D0_Hz</code></td>
+<td><code>float</code></td>
+<td><code>0.0</code></td>
+<td>Axial zero-field splitting (Hz)</td>
+</tr>
+<tr>
+<td><code>E0_Hz</code></td>
+<td><code>float</code></td>
+<td><code>0.0</code></td>
+<td>Transverse strain splitting (Hz)</td>
+</tr>
+<tr>
+<td><code>d_perp</code></td>
+<td><code>float</code></td>
+<td><code>0.0</code></td>
+<td>Transverse E-field coupling (Hz / (V/m))</td>
+</tr>
+<tr>
+<td><code>d_parallel</code></td>
+<td><code>float</code></td>
+<td><code>0.0</code></td>
+<td>Axial E-field coupling (Hz / (V/m))</td>
+</tr>
+<tr>
+<td><code>gamma_Hz_T</code></td>
+<td><code>float</code></td>
+<td><code>28e9</code></td>
+<td>Electron gyromagnetic ratio (Hz/T)</td>
+</tr>
+<tr>
+<td><code>ms0_index</code></td>
+<td><code>int</code></td>
+<td><code>1</code></td>
+<td>Index of the |m_s = 0⟩ state in the descending-Sz basis</td>
+</tr>
+<tr>
+<td><code>nuclear_spins</code></td>
+<td><code>List[NuclearSpin]</code></td>
+<td><code>[]</code></td>
+<td>Coupled nuclear spins (nearest-neighbour environment)</td>
+</tr>
+<tr>
+<td><code>rate_params</code></td>
+<td><code>RateParams \| None</code></td>
+<td><code>None</code></td>
+<td>Rate constants for the optical / ISC cycle</td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td><code>str</code></td>
+<td><code>""</code></td>
+<td>Free-text notes</td>
+</tr>
+</tbody>
+</table>
+<h4 id="built-in-presets">Built-in presets<a class="headerlink" href="#built-in-presets" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Name</th>
+<th>Host</th>
+<th><em>S</em></th>
+<th><em>D</em>₀</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>VB_MINUS</code></td>
+<td><code>"vb_minus"</code></td>
+<td>hBN</td>
+<td>1</td>
+<td>3.46 GHz</td>
+</tr>
+<tr>
+<td><code>NV_MINUS</code></td>
+<td><code>"nv_minus"</code></td>
+<td>diamond</td>
+<td>1</td>
+<td>2.87 GHz</td>
+</tr>
+<tr>
+<td><code>V_SIC</code></td>
+<td><code>"v_sic"</code></td>
+<td>4H-SiC</td>
+<td>1</td>
+<td>1.28 GHz</td>
+</tr>
+<tr>
+<td><code>P1_CENTER</code></td>
+<td><code>"p1"</code></td>
+<td>diamond</td>
+<td>½</td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>CR_GAN</code></td>
+<td><code>"cr_gaN"</code></td>
+<td>GaN</td>
+<td>3/2</td>
+<td>1.80 GHz</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-custom-defect">Example — custom defect<a class="headerlink" href="#example-custom-defect" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.defects</span><span class="w"> </span><span class="kn">import</span> <span class="n">DefectType</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">my_defect</span> <span class="o">=</span> <span class="n">DefectType</span><span class="p">(</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;my_V2&quot;</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">spin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">D0_Hz</span><span class="o">=</span><span class="mf">1.5e9</span><span class="p">,</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">E0_Hz</span><span class="o">=</span><span class="mf">20e6</span><span class="p">,</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">d_perp</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">notes</span><span class="o">=</span><span class="s2">&quot;Hypothetical spin-1 defect&quot;</span><span class="p">,</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="p">)</span>
+</span></code></pre></div>
+<hr />
+<h3 id="get_defect"><code>get_defect</code><a class="headerlink" href="#get_defect" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.defects</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_defect</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_defect</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DefectType</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">DefectType</span>
+</span></code></pre></div>
+<p>Return a built-in <code>DefectType</code> preset by name, or pass a <code>DefectType</code> instance through unchanged (identity pass-through for polymorphic code).</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>str \| DefectType</code></td>
+<td>Preset name string or an existing <code>DefectType</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>DefectType</code></p>
+<p><strong>Raises:</strong> <code>KeyError</code> if the name is not recognized.</p>
+<p><strong>Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">nv</span> <span class="o">=</span> <span class="n">get_defect</span><span class="p">(</span><span class="s2">&quot;nv_minus&quot;</span><span class="p">)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">nv</span><span class="o">.</span><span class="n">D0_Hz</span><span class="p">)</span>  <span class="c1"># 2.87e9</span>
+</span></code></pre></div></p>
+<hr />
+<h3 id="list_defects"><code>list_defects</code><a class="headerlink" href="#list_defects" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.defects</span><span class="w"> </span><span class="kn">import</span> <span class="n">list_defects</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">list_defects</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</span></code></pre></div>
+<p>Print a formatted table of all built-in defect presets to stdout.</p>
+<hr />
+<h2 id="spindefectsimspinhamiltonian"><code>SpinDefectSim.spin.hamiltonian</code><a class="headerlink" href="#spindefectsimspinhamiltonian" title="Permanent link">&para;</a></h2>
+<h3 id="spinparams"><code>SpinParams</code><a class="headerlink" href="#spinparams" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.hamiltonian</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpinParams</span>
+</span></code></pre></div>
+<p>Dataclass fully specifying a single-spin Hamiltonian — the minimal input needed by <code>odmr_hamiltonian_Hz</code> and related functions.</p>
+<h4 id="fields_1">Fields<a class="headerlink" href="#fields_1" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>D0</code></td>
+<td><code>float</code></td>
+<td>Axial ZFS (Hz)</td>
+</tr>
+<tr>
+<td><code>E0</code></td>
+<td><code>float</code></td>
+<td>Transverse ZFS strain (Hz)</td>
+</tr>
+<tr>
+<td><code>d_perp_Hz_per_Vpm</code></td>
+<td><code>float</code></td>
+<td>Transverse E-field coupling</td>
+</tr>
+<tr>
+<td><code>B_T</code></td>
+<td><code>np.ndarray</code></td>
+<td>Lab-frame bias B-field, shape <code>(3,)</code>, in T</td>
+</tr>
+<tr>
+<td><code>gamma_e_Hz_per_T</code></td>
+<td><code>float</code></td>
+<td>Electron gyromagnetic ratio (Hz/T), default <code>28e9</code></td>
+</tr>
+<tr>
+<td><code>d_parallel_Hz_per_Vpm</code></td>
+<td><code>float</code></td>
+<td>Axial E-field coupling (default <code>0</code>)</td>
+</tr>
+<tr>
+<td><code>B_extra_T</code></td>
+<td><code>np.ndarray</code></td>
+<td>Additional B-field (stray signal), shape <code>(3,)</code>, in T</td>
+</tr>
+<tr>
+<td><code>spin</code></td>
+<td><code>float</code></td>
+<td>Quantum number <em>S</em> (default <code>1.0</code>)</td>
+</tr>
+<tr>
+<td><code>ms0_index</code></td>
+<td><code>int</code></td>
+<td>Index of the |m_s = 0⟩-like basis state (default <code>1</code>)</td>
+</tr>
+<tr>
+<td><code>quantization_axis</code></td>
+<td><code>np.ndarray</code></td>
+<td>Defect z′-axis in the lab frame, shape <code>(3,)</code> (default <code>[0,0,1]</code>)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="odmr_hamiltonian_hz"><code>odmr_hamiltonian_Hz</code><a class="headerlink" href="#odmr_hamiltonian_hz" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.hamiltonian</span><span class="w"> </span><span class="kn">import</span> <span class="n">odmr_hamiltonian_Hz</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">odmr_hamiltonian_Hz</span><span class="p">(</span><span class="n">sp</span><span class="p">:</span> <span class="n">SpinParams</span><span class="p">,</span> <span class="n">E_vec_lab</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Build the electron-only spin Hamiltonian H/h (in Hz) for an arbitrary spin-<em>S</em> defect. The applied E- and B-fields are automatically rotated from the lab frame into the defect's local frame using the <code>quantization_axis</code>.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sp</code></td>
+<td><code>SpinParams</code></td>
+<td>Spin parameters</td>
+</tr>
+<tr>
+<td><code>E_vec_lab</code></td>
+<td><code>np.ndarray</code></td>
+<td>Electric field in the <strong>lab frame</strong>, shape <code>(3,)</code>, in V/m</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> — complex128 Hermitian matrix, shape <code>(2S+1, 2S+1)</code>, in Hz</p>
+<p><strong>Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.hamiltonian</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpinParams</span><span class="p">,</span> <span class="n">odmr_hamiltonian_Hz</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">sp</span> <span class="o">=</span> <span class="n">SpinParams</span><span class="p">(</span><span class="n">D0</span><span class="o">=</span><span class="mf">3.46e9</span><span class="p">,</span> <span class="n">E0</span><span class="o">=</span><span class="mf">50e6</span><span class="p">,</span> <span class="n">d_perp_Hz_per_Vpm</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>                <span class="n">B_T</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.5e-3</span><span class="p">]))</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="n">H</span> <span class="o">=</span> <span class="n">odmr_hamiltonian_Hz</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">E_vec_lab</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>   <span class="c1"># (3, 3)</span>
+</span></code></pre></div></p>
+<hr />
+<h3 id="full_hyperfine_hamiltonian_hz"><code>full_hyperfine_hamiltonian_Hz</code><a class="headerlink" href="#full_hyperfine_hamiltonian_hz" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.hamiltonian</span><span class="w"> </span><span class="kn">import</span> <span class="n">full_hyperfine_hamiltonian_Hz</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">full_hyperfine_hamiltonian_Hz</span><span class="p">(</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">sp</span><span class="p">:</span> <span class="n">SpinParams</span><span class="p">,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">E_vec_lab</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="n">nuclear_spins</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Build the complete H/h (Hz) in the tensor-product Hilbert space H_e ⊗ H_n1 ⊗ H_n2 ⊗ …. Includes the electron-spin Hamiltonian plus hyperfine coupling, nuclear Zeeman, and quadrupole terms for each nuclear spin.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sp</code></td>
+<td><code>SpinParams</code></td>
+<td>Electron spin parameters</td>
+</tr>
+<tr>
+<td><code>E_vec_lab</code></td>
+<td><code>np.ndarray</code></td>
+<td>Electric field in lab frame (V/m)</td>
+</tr>
+<tr>
+<td><code>nuclear_spins</code></td>
+<td><code>List[NuclearSpin]</code></td>
+<td>Nuclear spins to include</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> — complex128 Hermitian matrix, shape <code>(dim_total, dim_total)</code> where <code>dim_total = (2S+1) × Π(2Iₖ+1)</code></p>
+<hr />
+<h3 id="odmr_transitions_hz"><code>odmr_transitions_Hz</code><a class="headerlink" href="#odmr_transitions_hz" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.hamiltonian</span><span class="w"> </span><span class="kn">import</span> <span class="n">odmr_transitions_Hz</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">odmr_transitions_Hz</span><span class="p">(</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="n">H</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">electron_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="n">ms0_basis_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="n">overlap_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Diagonalise a (possibly full hyperfine) Hamiltonian and extract all ODMR transition frequencies originating from the |m_s = 0⟩-like eigenstate(s).</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>H</code></td>
+<td><code>np.ndarray</code></td>
+<td>Hamiltonian matrix (from <code>full_hyperfine_hamiltonian_Hz</code>)</td>
+</tr>
+<tr>
+<td><code>electron_dim</code></td>
+<td><code>int</code></td>
+<td>Electron Hilbert space dimension (2S+1)</td>
+</tr>
+<tr>
+<td><code>ms0_basis_index</code></td>
+<td><code>int</code></td>
+<td>Index of the |ms=0⟩ state in the <strong>electron</strong> basis</td>
+</tr>
+<tr>
+<td><code>overlap_threshold</code></td>
+<td><code>float</code></td>
+<td>Minimum |⟨ms=0|ψ⟩|² to qualify as an ms=0-like state</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> — float64 array of frequencies (Hz), sorted ascending</p>
+<hr />
+<h3 id="diagonalize_hamiltonian"><code>diagonalize_hamiltonian</code><a class="headerlink" href="#diagonalize_hamiltonian" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.hamiltonian</span><span class="w"> </span><span class="kn">import</span> <span class="n">diagonalize_hamiltonian</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">diagonalize_hamiltonian</span><span class="p">(</span><span class="n">H</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Diagonalise a Hermitian Hamiltonian using <code>np.linalg.eigh</code> (eigenvalues sorted ascending).</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>H</code></td>
+<td><code>np.ndarray</code></td>
+<td>Hermitian matrix (H/h in Hz)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>(eigenvalues_Hz, eigenvectors)</code> — both as complex128 arrays; eigenvalues are sorted ascending</p>
+<hr />
+<h3 id="extract_ms0_like_transitions_hz"><code>extract_ms0_like_transitions_Hz</code><a class="headerlink" href="#extract_ms0_like_transitions_hz" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.hamiltonian</span><span class="w"> </span><span class="kn">import</span> <span class="n">extract_ms0_like_transitions_Hz</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">extract_ms0_like_transitions_Hz</span><span class="p">(</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="n">evals_Hz</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="n">evecs</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="n">ms0_basis_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Given pre-computed eigenvalues and eigenvectors, find the eigenstate with the highest overlap with the |ms=0⟩ basis state and return all transition frequencies <em>from</em> that state.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>evals_Hz</code></td>
+<td><code>np.ndarray</code></td>
+<td>Eigenvalues (Hz), sorted ascending</td>
+</tr>
+<tr>
+<td><code>evecs</code></td>
+<td><code>np.ndarray</code></td>
+<td>Eigenvectors, column j is the j-th eigenstate</td>
+</tr>
+<tr>
+<td><code>ms0_basis_index</code></td>
+<td><code>int</code></td>
+<td>Basis row index corresponding to |ms=0⟩</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>(freqs_Hz, i0)</code> — frequency array in Hz and the eigenstate index <em>i0</em></p>
+<hr />
+<h3 id="spindefect"><code>SpinDefect</code><a class="headerlink" href="#spindefect" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.hamiltonian</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpinDefect</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="c1"># or simply:</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">SpinDefectSim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sds</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">sds</span><span class="o">.</span><span class="n">SpinDefect</span>
+</span></code></pre></div>
+<p>High-level object representing a single ODMR-active spin defect. Inherits <code>PhysicalParams</code>.</p>
+<h4 id="constructor">Constructor<a class="headerlink" href="#constructor" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">SpinDefect</span><span class="p">(</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="n">defect_type</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DefectType</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="n">spin</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">B_mT</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="n">B_vec_mT</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">array_like</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>    <span class="n">quantization_axis</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">array_like</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>    <span class="n">D0_Hz</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>    <span class="n">E0_Hz</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>    <span class="n">d_perp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>    <span class="n">d_parallel</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>    <span class="n">nuclear_spins</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">NuclearSpin</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>    <span class="n">defaults</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Defaults</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>defect_type</code></td>
+<td><code>str \| DefectType \| None</code></td>
+<td>Preset name or custom <code>DefectType</code>; <code>None</code> → use <code>defaults.defect_type</code></td>
+</tr>
+<tr>
+<td><code>spin</code></td>
+<td><code>float \| None</code></td>
+<td>Override spin quantum number <em>S</em></td>
+</tr>
+<tr>
+<td><code>B_mT</code></td>
+<td><code>float \| None</code></td>
+<td>Scalar bias B-field magnitude (mT), applied along z</td>
+</tr>
+<tr>
+<td><code>B_vec_mT</code></td>
+<td><code>array_like \| None</code></td>
+<td>Full B-field vector (mT), shape <code>(3,)</code> — overrides <code>B_mT</code></td>
+</tr>
+<tr>
+<td><code>quantization_axis</code></td>
+<td><code>array_like \| None</code></td>
+<td>Defect z′-axis in lab frame, shape <code>(3,)</code></td>
+</tr>
+<tr>
+<td><code>D0_Hz</code></td>
+<td><code>float \| None</code></td>
+<td>Override axial ZFS (Hz)</td>
+</tr>
+<tr>
+<td><code>E0_Hz</code></td>
+<td><code>float \| None</code></td>
+<td>Override transverse strain (Hz)</td>
+</tr>
+<tr>
+<td><code>d_perp</code></td>
+<td><code>float \| None</code></td>
+<td>Override transverse E-field coupling</td>
+</tr>
+<tr>
+<td><code>d_parallel</code></td>
+<td><code>float \| None</code></td>
+<td>Override axial E-field coupling</td>
+</tr>
+<tr>
+<td><code>nuclear_spins</code></td>
+<td><code>list \| None</code></td>
+<td>Override nuclear-spin list</td>
+</tr>
+<tr>
+<td><code>defaults</code></td>
+<td><code>Defaults \| None</code></td>
+<td>Global defaults object</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<ul>
+<li><code>spin_params</code> — <code>SpinParams</code> instance built from the constructor arguments</li>
+<li><code>defect_type</code> — resolved <code>DefectType</code></li>
+<li><code>nuclear_spins</code> — list of <code>NuclearSpin</code> objects</li>
+</ul>
+<h4 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h4>
+<hr />
+<h5 id="hamiltonian"><code>hamiltonian</code><a class="headerlink" href="#hamiltonian" title="Permanent link">&para;</a></h5>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">hamiltonian</span><span class="p">(</span><span class="n">E_vec_Vpm</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Return the electron-only Hamiltonian H/h (Hz), shape <code>(2S+1, 2S+1)</code>.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>E_vec_Vpm</code></td>
+<td><code>array_like</code></td>
+<td>Electric field in lab frame (V/m)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> complex128, shape <code>(2S+1, 2S+1)</code></p>
+<hr />
+<h5 id="full_hamiltonian"><code>full_hamiltonian</code><a class="headerlink" href="#full_hamiltonian" title="Permanent link">&para;</a></h5>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">full_hamiltonian</span><span class="p">(</span><span class="n">E_vec_Vpm</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Return H/h in the full electron ⊗ nuclear Hilbert space.</p>
+<p><strong>Returns:</strong> <code>np.ndarray</code> complex128, shape <code>(dim_total, dim_total)</code></p>
+<hr />
+<h5 id="diagonalize"><code>diagonalize</code><a class="headerlink" href="#diagonalize" title="Permanent link">&para;</a></h5>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">diagonalize</span><span class="p">(</span><span class="n">E_vec_Vpm</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Return <code>(eigenvalues_Hz, eigenvectors)</code> of the electron-only Hamiltonian.</p>
+<hr />
+<h5 id="transition_frequencies"><code>transition_frequencies</code><a class="headerlink" href="#transition_frequencies" title="Permanent link">&para;</a></h5>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">transition_frequencies</span><span class="p">(</span><span class="n">E_vec_Vpm</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Return all ODMR transition frequencies from the |ms=0⟩-like state (Hz), sorted ascending.</p>
+<p><strong>Returns:</strong> <code>np.ndarray</code> float64, length <code>2S</code></p>
+<p><strong>Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">d</span> <span class="o">=</span> <span class="n">SpinDefect</span><span class="p">(</span><span class="s2">&quot;vb_minus&quot;</span><span class="p">,</span> <span class="n">B_mT</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="n">freqs</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">transition_frequencies</span><span class="p">()</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="c1"># → array([3.403e9, 3.517e9]) Hz (approximate)</span>
+</span></code></pre></div></p>
+<hr />
+<h5 id="hyperfine_transitions"><code>hyperfine_transitions</code><a class="headerlink" href="#hyperfine_transitions" title="Permanent link">&para;</a></h5>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">hyperfine_transitions</span><span class="p">(</span><span class="n">E_vec_Vpm</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="n">overlap_threshold</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>ODMR transition frequencies from the <strong>full</strong> hyperfine Hamiltonian, sorted ascending.</p>
+<p><strong>Returns:</strong> <code>np.ndarray</code> float64</p>
+<hr />
+<h5 id="zero_field_splitting"><code>zero_field_splitting</code><a class="headerlink" href="#zero_field_splitting" title="Permanent link">&para;</a></h5>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">zero_field_splitting</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">float</span>
+</span></code></pre></div>
+<p>Return the maximum transition splitting at zero E-field (Hz).</p>
+<hr />
+<h5 id="to_experiment"><code>to_experiment</code><a class="headerlink" href="#to_experiment" title="Permanent link">&para;</a></h5>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">to_experiment</span><span class="p">(</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>    <span class="n">E_vec_Vpm</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    <span class="n">B_extra_T</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    <span class="o">*</span><span class="p">,</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>    <span class="n">sensing</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;both&quot;</span><span class="p">,</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SensingExperiment</span>
+</span></code></pre></div>
+<p>Wrap this single spin into a <code>SensingExperiment</code> with <code>N_def=1</code>.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>E_vec_Vpm</code></td>
+<td><code>array_like</code></td>
+<td>Applied E-field (V/m)</td>
+</tr>
+<tr>
+<td><code>B_extra_T</code></td>
+<td><code>array_like</code></td>
+<td>Additional signal B-field (T)</td>
+</tr>
+<tr>
+<td><code>sensing</code></td>
+<td><code>str</code></td>
+<td><code>"E"</code>, <code>"B"</code>, or <code>"both"</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>SensingExperiment</code></p>
+<hr />
+<h2 id="spindefectsimspinnuclear"><code>SpinDefectSim.spin.nuclear</code><a class="headerlink" href="#spindefectsimspinnuclear" title="Permanent link">&para;</a></h2>
+<h3 id="nuclearspin"><code>NuclearSpin</code><a class="headerlink" href="#nuclearspin" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.nuclear</span><span class="w"> </span><span class="kn">import</span> <span class="n">NuclearSpin</span>
+</span></code></pre></div>
+<p>Dataclass describing a single nuclear spin coupled to the electron spin via a hyperfine tensor.</p>
+<h4 id="fields_2">Fields<a class="headerlink" href="#fields_2" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spin</code></td>
+<td><code>float</code></td>
+<td>Nuclear spin quantum number <em>I</em></td>
+</tr>
+<tr>
+<td><code>A_tensor_Hz</code></td>
+<td><code>np.ndarray</code></td>
+<td>3×3 hyperfine tensor in Hz (in the defect local frame)</td>
+</tr>
+<tr>
+<td><code>gamma_Hz_T</code></td>
+<td><code>float</code></td>
+<td>Nuclear gyromagnetic ratio γ_n (Hz/T)</td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td><code>str</code></td>
+<td>Isotope label, e.g. <code>"14N"</code></td>
+</tr>
+<tr>
+<td><code>quadrupole_Hz</code></td>
+<td><code>float</code></td>
+<td>Nuclear quadrupole coupling <em>P</em> (Hz); only relevant for <em>I</em> ≥ 1</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="axial_a_tensor"><code>axial_A_tensor</code><a class="headerlink" href="#axial_a_tensor" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.nuclear</span><span class="w"> </span><span class="kn">import</span> <span class="n">axial_A_tensor</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">axial_A_tensor</span><span class="p">(</span><span class="n">A_zz_Hz</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">A_perp_Hz</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Return a diag([A_perp, A_perp, A_zz]) 3×3 array — the standard form for axially symmetric hyperfine coupling.</p>
+<p><strong>Returns:</strong> <code>np.ndarray</code> shape <code>(3, 3)</code></p>
+<p><strong>Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">A</span> <span class="o">=</span> <span class="n">axial_A_tensor</span><span class="p">(</span><span class="n">A_zz_Hz</span><span class="o">=-</span><span class="mf">2.14e6</span><span class="p">,</span> <span class="n">A_perp_Hz</span><span class="o">=-</span><span class="mf">2.70e6</span><span class="p">)</span>
+</span></code></pre></div></p>
+<hr />
+<h3 id="isotropic_a_tensor"><code>isotropic_A_tensor</code><a class="headerlink" href="#isotropic_a_tensor" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.nuclear</span><span class="w"> </span><span class="kn">import</span> <span class="n">isotropic_A_tensor</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">isotropic_A_tensor</span><span class="p">(</span><span class="n">A_iso_Hz</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Return <code>A_iso × I₃</code>.</p>
+<hr />
+<h3 id="isotope-gyromagnetic-ratios">Isotope gyromagnetic ratios<a class="headerlink" href="#isotope-gyromagnetic-ratios" title="Permanent link">&para;</a></h3>
+<p>Pre-defined constants (Hz/T) for common isotopes:</p>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Isotope</th>
+<th><em>I</em></th>
+<th>Value (Hz/T)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GAMMA_14N</code></td>
+<td>¹⁴N</td>
+<td>1</td>
+<td><code>3.077e6</code></td>
+</tr>
+<tr>
+<td><code>GAMMA_15N</code></td>
+<td>¹⁵N</td>
+<td>½</td>
+<td><code>-4.316e6</code></td>
+</tr>
+<tr>
+<td><code>GAMMA_11B</code></td>
+<td>¹¹B</td>
+<td>3/2</td>
+<td><code>13.660e6</code></td>
+</tr>
+<tr>
+<td><code>GAMMA_10B</code></td>
+<td>¹⁰B</td>
+<td>3</td>
+<td><code>4.575e6</code></td>
+</tr>
+<tr>
+<td><code>GAMMA_13C</code></td>
+<td>¹³C</td>
+<td>½</td>
+<td><code>10.708e6</code></td>
+</tr>
+<tr>
+<td><code>GAMMA_29Si</code></td>
+<td>²⁹Si</td>
+<td>½</td>
+<td><code>-5.319e6</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="spindefectsimspinmatrices"><code>SpinDefectSim.spin.matrices</code><a class="headerlink" href="#spindefectsimspinmatrices" title="Permanent link">&para;</a></h2>
+<h3 id="spin_matrices"><code>spin_matrices</code><a class="headerlink" href="#spin_matrices" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.matrices</span><span class="w"> </span><span class="kn">import</span> <span class="n">spin_matrices</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">spin_matrices</span><span class="p">(</span><span class="n">S</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Return the four spin operators Sx, Sy, Sz, and the identity I for an arbitrary spin quantum number <em>S</em>.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>S</code></td>
+<td><code>float</code></td>
+<td>Spin quantum number (0.5, 1, 1.5, 2, …)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>(Sx, Sy, Sz, I)</code> — each complex128, shape <code>(2S+1, 2S+1)</code></p>
+<p><strong>Basis:</strong> states ordered as {|+S⟩, |+S−1⟩, …, |−S⟩} (descending Sz eigenvalues).</p>
+<p><strong>Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">Sx</span><span class="p">,</span> <span class="n">Sy</span><span class="p">,</span> <span class="n">Sz</span><span class="p">,</span> <span class="n">I</span> <span class="o">=</span> <span class="n">spin_matrices</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="c1"># Sz has eigenvalues +1, 0, -1</span>
+</span></code></pre></div></p>
+<hr />
+<h3 id="spin_1_matrices-and-spin_half_matrices"><code>spin_1_matrices</code> and <code>spin_half_matrices</code><a class="headerlink" href="#spin_1_matrices-and-spin_half_matrices" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.matrices</span><span class="w"> </span><span class="kn">import</span> <span class="n">spin_1_matrices</span><span class="p">,</span> <span class="n">spin_half_matrices</span>
+</span></code></pre></div>
+<p>Convenience functions returning the explicit spin-1 and spin-½ operators respectively, with the same <code>(Sx, Sy, Sz, I)</code> signature.</p>
+<hr />
+<h2 id="spindefectsimspinrates"><code>SpinDefectSim.spin.rates</code><a class="headerlink" href="#spindefectsimspinrates" title="Permanent link">&para;</a></h2>
+<h3 id="rateparams"><code>RateParams</code><a class="headerlink" href="#rateparams" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.rates</span><span class="w"> </span><span class="kn">import</span> <span class="n">RateParams</span>
+</span></code></pre></div>
+<p>Dataclass holding the optical / intersystem-crossing (ISC) rate constants for one defect species.</p>
+<h4 id="fields_3">Fields<a class="headerlink" href="#fields_3" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spin</code></td>
+<td><code>float</code></td>
+<td>Electron spin quantum number <em>S</em></td>
+</tr>
+<tr>
+<td><code>k_optical</code></td>
+<td><code>float</code></td>
+<td>Laser excitation rate (s⁻¹)</td>
+</tr>
+<tr>
+<td><code>k_rad</code></td>
+<td><code>float</code></td>
+<td>Radiative decay rate (s⁻¹)</td>
+</tr>
+<tr>
+<td><code>k_isc_excited</code></td>
+<td><code>Sequence[float]</code></td>
+<td>ISC rates from each excited state, length 2S+1 (s⁻¹)</td>
+</tr>
+<tr>
+<td><code>k_from_shelving</code></td>
+<td><code>Sequence[float]</code></td>
+<td>Return rates from shelving state to each ground state, length 2S+1 (s⁻¹)</td>
+</tr>
+<tr>
+<td><code>k_nr</code></td>
+<td><code>float</code></td>
+<td>Non-radiative quenching rate (s⁻¹), default <code>0.0</code></td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td><code>str</code></td>
+<td>Free-text notes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Property:</strong></p>
+<ul>
+<li><code>has_shelving: bool</code> — True if any ISC rate is nonzero</li>
+</ul>
+<h4 id="built-in-presets_1">Built-in presets<a class="headerlink" href="#built-in-presets_1" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Defect</th>
+<th><em>S</em></th>
+<th>Approx. contrast</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NV_RATES</code></td>
+<td>NV⁻ diamond</td>
+<td>1</td>
+<td>~23%</td>
+</tr>
+<tr>
+<td><code>VB_RATES</code></td>
+<td>VB⁻ hBN</td>
+<td>1</td>
+<td>~2%</td>
+</tr>
+<tr>
+<td><code>VSIC_RATES</code></td>
+<td>V_SiC 4H-SiC</td>
+<td>1</td>
+<td>~15%</td>
+</tr>
+<tr>
+<td><code>P1_RATES</code></td>
+<td>P1 diamond</td>
+<td>½</td>
+<td>0%</td>
+</tr>
+<tr>
+<td><code>CRGAN_RATES</code></td>
+<td>Cr GaN</td>
+<td>3/2</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="ratemodel"><code>RateModel</code><a class="headerlink" href="#ratemodel" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.rates</span><span class="w"> </span><span class="kn">import</span> <span class="n">RateModel</span>
+</span></code></pre></div>
+<p>Steady-state rate-equation solver for CW ODMR contrast.</p>
+<h4 id="constructor_1">Constructor<a class="headerlink" href="#constructor_1" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="n">RateModel</span><span class="p">(</span><span class="n">rate_params</span><span class="p">:</span> <span class="n">RateParams</span><span class="p">,</span> <span class="n">ms0_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span>
+</span></code></pre></div>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rate_params</code></td>
+<td><code>RateParams</code></td>
+<td>Rate constants</td>
+</tr>
+<tr>
+<td><code>ms0_index</code></td>
+<td><code>int</code></td>
+<td>Index of the ground |ms=0⟩ state</td>
+</tr>
+</tbody>
+</table>
+<h4 id="steady_state"><code>steady_state</code><a class="headerlink" href="#steady_state" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">steady_state</span><span class="p">(</span><span class="n">k_mw</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">mw_pair</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Solve for the steady-state population vector under CW illumination.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>k_mw</code></td>
+<td><code>float</code></td>
+<td>MW driving rate between two states (s⁻¹)</td>
+</tr>
+<tr>
+<td><code>mw_pair</code></td>
+<td><code>tuple \| None</code></td>
+<td><code>(i, j)</code> — which ground-state pair the MW drives</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> float, populations normalised to sum = 1</p>
+<hr />
+<h4 id="pl"><code>pl</code><a class="headerlink" href="#pl" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">pl</span><span class="p">(</span><span class="n">k_mw</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">mw_pair</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span>
+</span></code></pre></div>
+<p>Steady-state photoluminescence (proportional to photon count rate).</p>
+<hr />
+<h4 id="contrast"><code>contrast</code><a class="headerlink" href="#contrast" title="Permanent link">&para;</a></h4>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">contrast</span><span class="p">(</span><span class="n">mw_pair</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">k_mw</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span>
+</span></code></pre></div>
+<p>CW ODMR contrast <em>C</em> = (PL_off − PL_on) / PL_off.</p>
+<p><strong>Returns:</strong> <code>float</code> ∈ (0, 1)</p>
+<p><strong>Example:</strong>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.rates</span><span class="w"> </span><span class="kn">import</span> <span class="n">RateModel</span><span class="p">,</span> <span class="n">VB_RATES</span>
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="n">model</span> <span class="o">=</span> <span class="n">RateModel</span><span class="p">(</span><span class="n">VB_RATES</span><span class="p">,</span> <span class="n">ms0_index</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="n">C</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">contrast</span><span class="p">()</span>
+</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VB⁻ contrast ≈ </span><span class="si">{</span><span class="n">C</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># ≈ 2%</span>
+</span></code></pre></div></p>
+<hr />
+<h2 id="spindefectsimspinspectra"><code>SpinDefectSim.spin.spectra</code><a class="headerlink" href="#spindefectsimspinspectra" title="Permanent link">&para;</a></h2>
+<h3 id="lorentzian"><code>lorentzian</code><a class="headerlink" href="#lorentzian" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.spectra</span><span class="w"> </span><span class="kn">import</span> <span class="n">lorentzian</span>
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>
+</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">lorentzian</span><span class="p">(</span><span class="n">f</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">f0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">fwhm</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Normalised Lorentzian with unit peak: L(f; f0, fwhm).</p>
+<p><strong>Returns:</strong> <code>np.ndarray</code> same shape as <code>f</code></p>
+<hr />
+<h3 id="pl_model"><code>PL_model</code><a class="headerlink" href="#pl_model" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.spectra</span><span class="w"> </span><span class="kn">import</span> <span class="n">PL_model</span>
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>
+</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">PL_model</span><span class="p">(</span>
+</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>    <span class="n">f_MW_Hz</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-37-5"><a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a>    <span class="n">transitions_Hz</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-37-6"><a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a>    <span class="n">linewidth_Hz</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span><span id="__span-37-7"><a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a>    <span class="n">contrast</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">,</span>
+</span><span id="__span-37-8"><a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Compute the normalised CW photoluminescence spectrum for a single defect.</p>
+<p>The model is:</p>
+<div class="arithmatex">\[\text{PL}(f) = 1 - C \sum_{i} \frac{L(f;\, f_i,\, \Delta f)}{N_\text{trans}}\]</div>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>f_MW_Hz</code></td>
+<td><code>np.ndarray</code></td>
+<td>MW frequency axis (Hz)</td>
+</tr>
+<tr>
+<td><code>transitions_Hz</code></td>
+<td><code>np.ndarray</code></td>
+<td>ODMR transition centre frequencies (Hz)</td>
+</tr>
+<tr>
+<td><code>linewidth_Hz</code></td>
+<td><code>float</code></td>
+<td>Lorentzian FWHM (Hz)</td>
+</tr>
+<tr>
+<td><code>contrast</code></td>
+<td><code>float</code></td>
+<td>Peak contrast <em>C</em> ∈ (0, 1)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> float, PL values in approximately [1 − C, 1]</p>
+<hr />
+<h3 id="ensemble_transitions_from_efields"><code>ensemble_transitions_from_Efields</code><a class="headerlink" href="#ensemble_transitions_from_efields" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.spectra</span><span class="w"> </span><span class="kn">import</span> <span class="n">ensemble_transitions_from_Efields</span>
+</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>
+</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">ensemble_transitions_from_Efields</span><span class="p">(</span>
+</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>    <span class="n">E_fields_Vpm</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-38-5"><a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a>    <span class="n">spin_params</span><span class="p">:</span> <span class="n">SpinParams</span><span class="p">,</span>
+</span><span id="__span-38-6"><a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a>    <span class="n">ms0_basis_index</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-38-7"><a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a>    <span class="n">quantization_axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-38-8"><a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a>    <span class="n">B_extra_fields</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-38-9"><a id="__codelineno-38-9" name="__codelineno-38-9" href="#__codelineno-38-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span>
+</span></code></pre></div>
+<p>Compute the ODMR transition frequencies for each defect in an ensemble, given their local electric fields.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>E_fields_Vpm</code></td>
+<td><code>np.ndarray</code></td>
+<td>Local E-fields, shape <code>(N, 3)</code>, in V/m</td>
+</tr>
+<tr>
+<td><code>spin_params</code></td>
+<td><code>SpinParams</code></td>
+<td>Shared spin parameters (bias B-field, ZFS, etc.)</td>
+</tr>
+<tr>
+<td><code>ms0_basis_index</code></td>
+<td><code>int \| None</code></td>
+<td>Override |ms=0⟩ basis index</td>
+</tr>
+<tr>
+<td><code>quantization_axes</code></td>
+<td><code>np.ndarray \| None</code></td>
+<td>Per-defect z′-axes, shape <code>(N, 3)</code></td>
+</tr>
+<tr>
+<td><code>B_extra_fields</code></td>
+<td><code>np.ndarray \| None</code></td>
+<td>Per-defect stray B-fields, shape <code>(N, 3)</code>, in T</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>list</code> — length N; each element is a float64 array of transition frequencies (Hz)</p>
+<hr />
+<h3 id="ensemble_odmr_spectrum"><code>ensemble_odmr_spectrum</code><a class="headerlink" href="#ensemble_odmr_spectrum" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.spectra</span><span class="w"> </span><span class="kn">import</span> <span class="n">ensemble_odmr_spectrum</span>
+</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>
+</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">ensemble_odmr_spectrum</span><span class="p">(</span>
+</span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a>    <span class="n">f_axis</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-39-5"><a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a>    <span class="n">transitions_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+</span><span id="__span-39-6"><a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a>    <span class="n">fwhm</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span><span id="__span-39-7"><a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a>    <span class="n">contrast</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.10</span><span class="p">,</span>
+</span><span id="__span-39-8"><a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Build the inhomogeneously broadened ensemble CW ODMR spectrum by summing individual Lorentzians.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>f_axis</code></td>
+<td><code>np.ndarray</code></td>
+<td>MW frequency axis (Hz)</td>
+</tr>
+<tr>
+<td><code>transitions_list</code></td>
+<td><code>list</code></td>
+<td>Output of <code>ensemble_transitions_from_Efields</code></td>
+</tr>
+<tr>
+<td><code>fwhm</code></td>
+<td><code>float</code></td>
+<td>Single-defect Lorentzian linewidth (Hz)</td>
+</tr>
+<tr>
+<td><code>contrast</code></td>
+<td><code>float</code></td>
+<td>Per-defect contrast</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> float, same shape as <code>f_axis</code> (1 = no resonance, dips toward 1 − contrast)</p>
+<hr />
+<h2 id="spindefectsimspinecho"><code>SpinDefectSim.spin.echo</code><a class="headerlink" href="#spindefectsimspinecho" title="Permanent link">&para;</a></h2>
+<h3 id="spin_echo_effective_fwhm"><code>spin_echo_effective_fwhm</code><a class="headerlink" href="#spin_echo_effective_fwhm" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.echo</span><span class="w"> </span><span class="kn">import</span> <span class="n">spin_echo_effective_fwhm</span>
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>
+</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">spin_echo_effective_fwhm</span><span class="p">(</span><span class="n">T2_s</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span>
+</span></code></pre></div>
+<p>Return the Fourier-transform-limited echo linewidth: 1 / (π T₂).</p>
+<hr />
+<h3 id="echo_detected_odmr_spectrum"><code>echo_detected_odmr_spectrum</code><a class="headerlink" href="#echo_detected_odmr_spectrum" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.echo</span><span class="w"> </span><span class="kn">import</span> <span class="n">echo_detected_odmr_spectrum</span>
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">echo_detected_odmr_spectrum</span><span class="p">(</span>
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>    <span class="n">f_axis</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-41-5"><a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a>    <span class="n">transitions_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+</span><span id="__span-41-6"><a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a>    <span class="n">T2_s</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span><span id="__span-41-7"><a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a>    <span class="n">contrast</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.10</span><span class="p">,</span>
+</span><span id="__span-41-8"><a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Echo-detected ensemble ODMR spectrum using T₂-limited Lorentzian linewidths.</p>
+<hr />
+<h3 id="ensemble_echo_signal"><code>ensemble_echo_signal</code><a class="headerlink" href="#ensemble_echo_signal" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.echo</span><span class="w"> </span><span class="kn">import</span> <span class="n">ensemble_echo_signal</span>
+</span><span id="__span-42-2"><a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>
+</span><span id="__span-42-3"><a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">ensemble_echo_signal</span><span class="p">(</span>
+</span><span id="__span-42-4"><a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a>    <span class="n">freqs_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+</span><span id="__span-42-5"><a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a>    <span class="n">tau_range_s</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-42-6"><a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a>    <span class="n">T2_s</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span><span id="__span-42-7"><a id="__codelineno-42-7" name="__codelineno-42-7" href="#__codelineno-42-7"></a>    <span class="n">reference_Hz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-42-8"><a id="__codelineno-42-8" name="__codelineno-42-8" href="#__codelineno-42-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+</span></code></pre></div>
+<p>Ensemble-averaged Hahn-echo amplitude <em>S</em>(τ) vs free-precession time τ.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>freqs_list</code></td>
+<td><code>list</code></td>
+<td>Per-defect transition frequency arrays (Hz)</td>
+</tr>
+<tr>
+<td><code>tau_range_s</code></td>
+<td><code>np.ndarray</code></td>
+<td>1-D array of τ values (s)</td>
+</tr>
+<tr>
+<td><code>T2_s</code></td>
+<td><code>float</code></td>
+<td>T₂ coherence time (s)</td>
+</tr>
+<tr>
+<td><code>reference_Hz</code></td>
+<td><code>float \| np.ndarray \| None</code></td>
+<td>Lock-in demodulation reference frequency (Hz); <code>None</code> → auto-select</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns:</strong> <code>np.ndarray</code> 1-D, values in [−1, 1]</p>
+<hr />
+<h3 id="lock_in_difference_echo"><code>lock_in_difference_echo</code><a class="headerlink" href="#lock_in_difference_echo" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.echo</span><span class="w"> </span><span class="kn">import</span> <span class="n">lock_in_difference_echo</span>
+</span><span id="__span-43-2"><a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a>
+</span><span id="__span-43-3"><a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">lock_in_difference_echo</span><span class="p">(</span>
+</span><span id="__span-43-4"><a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a>    <span class="n">freqs_with</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+</span><span id="__span-43-5"><a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a>    <span class="n">freqs_no</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+</span><span id="__span-43-6"><a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a>    <span class="n">tau_range_s</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-43-7"><a id="__codelineno-43-7" name="__codelineno-43-7" href="#__codelineno-43-7"></a>    <span class="n">T2_s</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span><span id="__span-43-8"><a id="__codelineno-43-8" name="__codelineno-43-8" href="#__codelineno-43-8"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Modulated lock-in echo signal ΔS(τ) = S_with(τ) − S_no(τ).</p>
+<p><strong>Returns:</strong> <code>(S_with, S_no, S_diff)</code> — each 1-D array over τ</p>
+<hr />
+<h3 id="lock_in_odmr_spectrum"><code>lock_in_odmr_spectrum</code><a class="headerlink" href="#lock_in_odmr_spectrum" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.echo</span><span class="w"> </span><span class="kn">import</span> <span class="n">lock_in_odmr_spectrum</span>
+</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>
+</span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">lock_in_odmr_spectrum</span><span class="p">(</span>
+</span><span id="__span-44-4"><a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a>    <span class="n">f_axis</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-44-5"><a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a>    <span class="n">freqs_with</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+</span><span id="__span-44-6"><a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a>    <span class="n">freqs_no</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+</span><span id="__span-44-7"><a id="__codelineno-44-7" name="__codelineno-44-7" href="#__codelineno-44-7"></a>    <span class="n">T2_s</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span><span id="__span-44-8"><a id="__codelineno-44-8" name="__codelineno-44-8" href="#__codelineno-44-8"></a>    <span class="n">contrast</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.10</span><span class="p">,</span>
+</span><span id="__span-44-9"><a id="__codelineno-44-9" name="__codelineno-44-9" href="#__codelineno-44-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Frequency-domain lock-in spectrum ΔPL(f) = PL_with(f) − PL_no(f).</p>
+<p><strong>Returns:</strong> <code>(diff_pl, pl_with, pl_no)</code> — each 1-D array over <code>f_axis</code></p>
+<hr />
+<h3 id="lock_in_difference_ramsey"><code>lock_in_difference_ramsey</code><a class="headerlink" href="#lock_in_difference_ramsey" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">SpinDefectSim.spin.echo</span><span class="w"> </span><span class="kn">import</span> <span class="n">lock_in_difference_ramsey</span>
+</span><span id="__span-45-2"><a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>
+</span><span id="__span-45-3"><a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">lock_in_difference_ramsey</span><span class="p">(</span>
+</span><span id="__span-45-4"><a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a>    <span class="n">freqs_with</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+</span><span id="__span-45-5"><a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a>    <span class="n">freqs_no</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+</span><span id="__span-45-6"><a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a>    <span class="n">tau_range_s</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+</span><span id="__span-45-7"><a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a>    <span class="n">T2_s</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span><span id="__span-45-8"><a id="__codelineno-45-8" name="__codelineno-45-8" href="#__codelineno-45-8"></a>    <span class="n">f_ref_Hz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-45-9"><a id="__codelineno-45-9" name="__codelineno-45-9" href="#__codelineno-45-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+</span></code></pre></div>
+<p>Modulated lock-in Ramsey signal ΔS(τ) = S_with(τ) − S_no(τ).</p>
+<p><strong>Returns:</strong> <code>(S_with, S_no, S_diff, f_ref_Hz)</code> — the demodulation reference frequency used is also returned</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
