@@ -9,7 +9,7 @@ description = "Spin-defect sensing simulation library: ODMR, ensemble modelling,
 readme = "README.md"
 license = { file = "LICENSE" }
 authors = [
-  { name = "Tobias M. Kaufmann" },
+  { name = "Tobias Kaufmann" },
 ]
 keywords = [
   "spin defects", "NV center", "VB minus", "ODMR", "quantum sensing",
@@ -44,7 +44,7 @@ dev = [
 [project.urls]
 Homepage = "https://github.com/TobiasMKaufmann/SpinDefectSim"
 Repository = "https://github.com/TobiasMKaufmann/SpinDefectSim"
-Documentation = "https://github.com/TobiasMKaufmann/SpinDefectSim/blob/main/docs/theory.md"
+Documentation = "https://github.com/TobiasMKaufmann/SpinDefectSim/blob/main/README.md"
 
 [tool.setuptools.packages.find]
 where = ["."]
